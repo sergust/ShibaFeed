@@ -22,6 +22,7 @@
 .header {
   background-color: #756c83;
   box-shadow: 0px 0px 10px grey;
+  margin-bottom: 35px;
 }
 
 .header--logo-container {
