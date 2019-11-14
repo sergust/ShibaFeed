@@ -1,4 +1,4 @@
-//const Posts = require('../models/Posts');
+const Post = require('../models/Post');
 const asyncHandler = require('../middleware/async');
 
 const ErrorResponse = require('../utils/errorResponse');
@@ -32,12 +32,17 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   // Check for published post
 
   // Create new post in database
-  const data = req.body;
-
-  res.status(201).json({
-    success: true,
-    data
-  });
+  try {
+    const post = await Post.create(req.body);
+    res.status(201).json({
+      success: true,
+      post
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false
+    });
+  }
 });
 
 // @desc    Update post
