@@ -1,0 +1,20 @@
+<template>
+  <b-container>
+    <b-row>
+      <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="mx-auto">
+        <app-post></app-post>
+        <app-post></app-post>
+        <app-post></app-post>
+      </b-col>
+    </b-row>
+  </b-container>
+</template>
+
+<script>
+import Post from './Post.vue';
+export default {
+  components: {
+    appPost: Post
+  }
+};
+</script>

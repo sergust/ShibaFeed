@@ -1,7 +1,7 @@
 <template>
   <b-container>
-    <b-row>
-      <b-col cols="8" class="add-post--block mx-auto">
+    <b-row class="mb-4 ml-1 mr-1" align-h="center">
+      <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="add-post--block">
         <b-form>
           <b-form-input id="input-large" size="lg" placeholder="What's new?" class="mb-2 mt-2"></b-form-input>
           <hr />
