@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const errorHandler = require('./middleware/error');
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {
 
 // Mount routers
 app.use('/api/v1/posts', posts);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT | 5000;
 

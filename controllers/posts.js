@@ -1,1 +1,1 @@
-const AsyncHandler = require('../middleware/async');
+const asyncHandler = require('../middleware/async');
