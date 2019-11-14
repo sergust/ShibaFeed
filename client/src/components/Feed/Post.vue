@@ -17,10 +17,8 @@
           <b-col>
             <div>
               <p>
-                <font-awesome-icon
-                  :icon="['fas', 'user-ninja']"
-                  class="mr-3"
-                /><small class="text-muted">User Name</small>
+                <font-awesome-icon :icon="['fas', 'user-ninja']" class="mr-3" />
+                <small class="text-muted">User Name</small>
               </p>
             </div>
             <div>
@@ -31,11 +29,18 @@
             <a class="post--comment-icon mt-2 mr-4">
               <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />3
             </a>
-            <a
-              ><a class="post--paw-icon mt-2">
+            <a>
+              <a class="post--paw-icon mt-2">
                 <font-awesome-icon :icon="['fas', 'paw']" class="mr-2" />3
-              </a></a
-            >
+              </a>
+            </a>
+          </b-col>
+        </b-row>
+        <b-row class="post--comments mt-4">
+          <b-col>
+            <app-post-component></app-post-component>
+            <app-post-component></app-post-component>
+            <app-post-component></app-post-component>
           </b-col>
         </b-row>
       </b-container>
@@ -44,7 +49,12 @@
 </template>
 
 <script>
-export default {};
+import PostComponent from './PostComment.vue';
+export default {
+  components: {
+    appPostComponent: PostComponent
+  }
+};
 </script>
 
 <style>
