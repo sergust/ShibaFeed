@@ -97,14 +97,21 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.deletePost = asyncHandler(async (req, res, next) => {
   // Get the post from database
+  const post = await Post.findById(req.params.id);
 
-  // Make sute the post is exists
+  // Make sure the post is exists
+  if (!post) {
+    return next(
+      new ErrorResponse(`Post ID ${req.params.id} has not been found`, 404)
+    );
+  }
 
   // Make sure user is bootcamp owner
 
   // Make sure user is an admin
 
   // Remove the post from database
+  post.remove();
 
   res.status(200).json({
     success: true,
