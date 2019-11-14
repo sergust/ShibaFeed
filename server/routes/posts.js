@@ -6,16 +6,15 @@ const {
   updatePost,
   deletePost
 } = require('../controllers/posts');
-
-// Connect posts model
-//const Posts = require('../models/Posts');
+const multer = require('multer');
+const upload = multer({ dest: '../public/' });
 
 const router = express.Router();
 
 router
   .route('/')
   .get(getPosts)
-  .post(createPost);
+  .post(upload.single('photo'), createPost);
 
 router
   .route('/:id')

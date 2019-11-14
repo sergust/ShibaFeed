@@ -1,3 +1,5 @@
+const path = require('path');
+
 const Post = require('../models/Post');
 const asyncHandler = require('../middleware/async');
 
@@ -58,8 +60,43 @@ exports.createPost = asyncHandler(async (req, res, next) => {
     );
   }
 
+  console.log(req.file);
+  console.log(req.body);
+
+  if (req.file) {
+    const file = req.file;
+
+    // Make sure the image is a photo
+    if (!file.mimetype.startsWith('image')) {
+      return next(new ErrorResponse(`Please upload an image file`, 400));
+    }
+
+    // Check file size
+    if (file.size > process.env.MAX_FILE_UPLOAD) {
+      return next(
+        new ErrorResponse(
+          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
+          400
+        )
+      );
+    }
+
+    // Create custom filename
+    file.name = `photo_${file.name}`;
+
+    // file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
+    //   if (err) {
+    //     console.error(err);
+    //     return next(new ErrorResponse('Problem with the file upload', 500));
+    //   }
+    // });
+
+    req.body.photo = file.name;
+    console.log(file.name);
+  }
+
   // Create new post in database
-  const post = await Post.create(req.body);
+  const post = await Post.create(JSON.parse(req.body));
 
   res.status(201).json({
     success: true,
