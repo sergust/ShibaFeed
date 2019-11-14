@@ -23,9 +23,17 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
 // @router  Get /api/v1/posts/:id
 // @access  Public
 exports.getPost = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.id);
+
+  if (!post) {
+    return next(
+      new ErrorResponse(`Post ID ${req.params.id} has not been found`, 404)
+    );
+  }
+
   res.status(200).json({
     success: true,
-    data: `Post ID ${req.params.id}`
+    data: post
   });
 });
 
