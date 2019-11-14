@@ -7,9 +7,15 @@ const ErrorResponse = require('../utils/errorResponse');
 // @router  GET /api/v1/posts
 // @access  Public
 exports.getPosts = asyncHandler(async (req, res, next) => {
+  const posts = await Post.find();
+
+  if (!posts) {
+    return next(new ErrorResponse(`Posts have not been found`, 404));
+  }
+
   res.status(200).json({
     success: true,
-    data: 'posts'
+    data: posts
   });
 });
 
@@ -30,19 +36,27 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   // Add user to req.body
 
   // Check for published post
+  const publishedPost = await Post.findOne({
+    title: req.body.title,
+    description: req.body.description
+  });
+
+  if (publishedPost) {
+    return next(
+      new ErrorResponse(
+        `Post with these title and description is exists! Try to change the title or description`,
+        400
+      )
+    );
+  }
 
   // Create new post in database
-  try {
-    const post = await Post.create(req.body);
-    res.status(201).json({
-      success: true,
-      post
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: false
-    });
-  }
+  const post = await Post.create(req.body);
+
+  res.status(201).json({
+    success: true,
+    post
+  });
 });
 
 // @desc    Update post
