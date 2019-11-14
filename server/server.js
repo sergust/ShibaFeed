@@ -7,15 +7,11 @@ const app = express();
 // Confing env variables
 dotenv.config({ path: './config/config.env' });
 
+// Route files
+const posts = require('./routes/posts');
+
 // Body parser
 app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: 'Kek lol'
-  });
-});
 
 // Mount routers
 app.use('/api/v1/posts', posts);
