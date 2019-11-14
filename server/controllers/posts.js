@@ -71,16 +71,25 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 // @router  PUT /api/v1/posts/:id
 // @access  Private
 exports.updatePost = asyncHandler(async (req, res, next) => {
-  const data = req.body;
   //Take the post from db
+  let post = await Post.findById(req.params.id);
 
   // Make sure post is exists
+  if (!post) {
+    return next(
+      new ErrorResponse(`Post ID ${req.params.id} has not been found`, 404)
+    );
+  }
 
   // Make sure user is bootcamp owner
 
   // Update the post in db
+  post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
 
-  res.status(200).json({ success: true, data });
+  res.status(200).json({ success: true, post });
 });
 
 // @desc    Delete post
