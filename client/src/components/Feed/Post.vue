@@ -32,27 +32,11 @@
               <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />3
             </a>
             <a
-              ><a class="post--comment-icon mt-2">
+              ><a class="post--paw-icon mt-2">
                 <font-awesome-icon :icon="['fas', 'paw']" class="mr-2" />3
               </a></a
             >
           </b-col>
-          <!-- <b-col cols="6" md="6" sm="" xl="6">
-            <div class="post--footer-block">
-              <p>
-                <font-awesome-icon :icon="['fas', 'user-ninja']" />
-                <small class="text-muted">User Name</small>
-                <br />
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </p>
-            </div>
-          </b-col>
-          <b-col cols="auto" md="2" sm="2" xl="3"> </b-col>
-          <b-col offset="6" cols="1">
-            <p class="post--comment-icon">
-              <font-awesome-icon :icon="['fas', 'comment']" class="mr-3" />3
-            </p>
-          </b-col> -->
         </b-row>
       </b-container>
     </template>
@@ -72,7 +56,8 @@ export default {};
   text-align: right;
 }
 
-.post--comment-icon:hover {
+.post--comment-icon:hover,
+.post--paw-icon:hover {
   cursor: pointer;
 }
 </style>
