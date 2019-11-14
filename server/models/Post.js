@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const PostSchema = new mongoose.Schema({
   title: {
@@ -17,6 +18,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     default: 'no-photo.jpg'
   },
+  slug: String,
   //   user: {
   //     type: mongoose.Schema.ObjectId,
   //     ref: 'User',
@@ -26,6 +28,12 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+});
+
+// Create post slug from the title
+PostSchema.pre('save', function(next) {
+  this.slug = slugify(this.title, { lower: true });
+  next();
 });
 
 module.exports = mongoose.model('Post', PostSchema);
