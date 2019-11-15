@@ -103,6 +103,16 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure user is post owner
+  if (post.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to update this post`,
+        401
+      )
+    );
+  }
+
   // Check for published post
   const publishedPost = await Post.findOne({
     title: req.body.title,
