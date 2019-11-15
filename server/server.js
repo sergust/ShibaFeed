@@ -16,6 +16,7 @@ connectDB();
 
 // Route files
 const posts = require('./routes/posts');
+const user = require('./routes/user');
 
 // Body parser
 app.use(express.json());
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Mount routers
 app.use('/api/v1/posts', posts);
+app.use('/api/v1/auth/users', user);
 
 app.use(errorHandler);
 
