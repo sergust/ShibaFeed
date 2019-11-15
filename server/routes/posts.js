@@ -18,7 +18,7 @@ router
 router
   .route('/:id')
   .get(getPost)
-  .put(updatePost)
+  .put(uploadImage.single('photo'), updatePost)
   .delete(deletePost);
 
 module.exports = router;

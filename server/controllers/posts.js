@@ -71,6 +71,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Add attached image
   if (req.file) {
     req.body.photo = req.file.filename;
   }
@@ -98,7 +99,35 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Make sure user is bootcamp owner
+  // Check for published post
+  const publishedPost = await Post.findOne({
+    title: req.body.title,
+    description: req.body.description
+  });
+
+  if (publishedPost) {
+    if (req.file) {
+      fs.unlinkSync(
+        `${process.env.FILE_UPLOAD_PATH}/${req.file.filename}`,
+        () => {
+          console.log(`${req.file.filename} has been deleted`.red);
+        }
+      );
+    }
+
+    return next(
+      new ErrorResponse(
+        `Post with these title and description is exists! Try to change the title or description`,
+        400
+      )
+    );
+  }
+  // Add attached image
+  if (req.file) {
+    req.body.photo = req.file.filename;
+  }
+
+  // Make sure user is post owner
 
   // Update the post in db
   post = await Post.findByIdAndUpdate(req.params.id, req.body, {
