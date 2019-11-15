@@ -11,4 +11,16 @@ const storage = multer.diskStorage({
   }
 });
 
-module.exports = storage;
+function fileFilter(req, file, cb) {
+  const extension = file.mimetype.split('/')[0];
+  console.log(extension);
+
+  if (extension !== 'image') {
+    return cb(new Error('Please upload only image file'), false);
+  }
+  cb(null, true);
+}
+
+const uploadImage = multer({ dest: './public/posts/', storage, fileFilter });
+
+module.exports = uploadImage;

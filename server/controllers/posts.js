@@ -1,9 +1,11 @@
 const path = require('path');
-
+const dotenv = require('dotenv');
+const fs = require('fs');
 const Post = require('../models/Post');
 const asyncHandler = require('../middleware/async');
-
 const ErrorResponse = require('../utils/errorResponse');
+
+dotenv.config({ path: './config/config.env' });
 
 // @desc    Get all posts
 // @router  GET /api/v1/posts
@@ -52,6 +54,15 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   });
 
   if (publishedPost) {
+    if (req.file) {
+      fs.unlinkSync(
+        `${process.env.FILE_UPLOAD_PATH}/${req.file.filename}`,
+        () => {
+          console.log(`${req.file.filename} has been deleted`);
+        }
+      );
+    }
+
     return next(
       new ErrorResponse(
         `Post with these title and description is exists! Try to change the title or description`,
@@ -61,24 +72,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   }
 
   if (req.file) {
-    const file = req.file;
-
-    // Make sure the image is a photo
-    if (!file.mimetype.startsWith('image')) {
-      return next(new ErrorResponse(`Please upload an image file`, 400));
-    }
-
-    // Check file size
-    if (file.size > process.env.MAX_FILE_UPLOAD) {
-      return next(
-        new ErrorResponse(
-          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
-          400
-        )
-      );
-    }
-
-    req.body.photo = file.filename;
+    req.body.photo = req.file.filename;
   }
 
   // Create new post in database
