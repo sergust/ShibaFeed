@@ -7,7 +7,8 @@ const {
   deletePost
 } = require('../controllers/posts');
 const multer = require('multer');
-const upload = multer({ dest: '../public/' });
+const storage = require('../utils/diskStorage');
+const upload = multer({ dest: './public/posts/', storage });
 
 const router = express.Router();
 

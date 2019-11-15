@@ -60,9 +60,6 @@ exports.createPost = asyncHandler(async (req, res, next) => {
     );
   }
 
-  console.log(req.file);
-  console.log(req.body);
-
   if (req.file) {
     const file = req.file;
 
@@ -81,22 +78,11 @@ exports.createPost = asyncHandler(async (req, res, next) => {
       );
     }
 
-    // Create custom filename
-    file.name = `photo_${file.name}`;
-
-    // file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
-    //   if (err) {
-    //     console.error(err);
-    //     return next(new ErrorResponse('Problem with the file upload', 500));
-    //   }
-    // });
-
-    req.body.photo = file.name;
-    console.log(file.name);
+    req.body.photo = file.filename;
   }
 
   // Create new post in database
-  const post = await Post.create(JSON.parse(req.body));
+  const post = await Post.create(req.body);
 
   res.status(201).json({
     success: true,
