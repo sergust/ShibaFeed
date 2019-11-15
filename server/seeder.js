@@ -23,10 +23,14 @@ console.log('⏳ Reading data...');
 const posts = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/posts.json`, 'utf-8')
 );
+const users = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
+);
 
 // Import into DB
 const importData = async () => {
   try {
+    await User.create(users);
     await Post.create(posts);
     console.log('✅ Data Imported!'.green);
     process.exit();
