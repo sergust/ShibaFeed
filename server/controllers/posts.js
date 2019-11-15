@@ -27,6 +27,9 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
 // @router  Get /api/v1/posts/:id
 // @access  Public
 exports.getPost = asyncHandler(async (req, res, next) => {
+  // Add user to req.body
+  req.body.user = req.user.id;
+
   const post = await Post.findById(req.params.id);
 
   if (!post) {
@@ -46,6 +49,7 @@ exports.getPost = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.createPost = asyncHandler(async (req, res, next) => {
   // Add user to req.body
+  req.body.user = req.user.id;
 
   // Check for published post
   const publishedPost = await Post.findOne({
