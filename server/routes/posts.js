@@ -8,9 +8,19 @@ const {
 } = require('../controllers/posts');
 const multer = require('multer');
 const storage = require('../utils/diskStorage');
-const upload = multer({ dest: './public/posts/', storage });
+const upload = multer({ dest: './public/posts/', storage, fileFilter });
 
 const router = express.Router();
+
+function fileFilter(req, file, cb) {
+  const extension = file.mimetype.split('/')[0];
+  console.log(extension);
+
+  if (extension !== 'image') {
+    return cb(new Error('Please upload only image file'), false);
+  }
+  cb(null, true);
+}
 
 router
   .route('/')
