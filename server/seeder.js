@@ -8,6 +8,7 @@ dotenv.config({ path: './config/config.env' });
 
 // Load models
 const Post = require('./models/Post');
+const User = require('./models/User');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -38,6 +39,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Post.deleteMany();
+    await User.deleteMany();
     console.log('⚠️ All data has been destroyed!');
     process.exit();
   } catch (e) {
