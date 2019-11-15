@@ -58,7 +58,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
       fs.unlinkSync(
         `${process.env.FILE_UPLOAD_PATH}/${req.file.filename}`,
         () => {
-          console.log(`${req.file.filename} has been deleted`);
+          console.log(`${req.file.filename} has been deleted`.red);
         }
       );
     }

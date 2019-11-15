@@ -1,5 +1,6 @@
 const multer = require('multer');
 const dotenv = require('dotenv');
+const ErrorResponse = require('./errorResponse');
 dotenv.config({ path: '../config/config.env' });
 
 const storage = multer.diskStorage({
@@ -16,7 +17,7 @@ function fileFilter(req, file, cb) {
   console.log(extension);
 
   if (extension !== 'image') {
-    return cb(new Error('Please upload only image file'), false);
+    return cb(new ErrorResponse('Please upload only image file', 400), false);
   }
   cb(null, true);
 }
