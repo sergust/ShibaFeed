@@ -122,6 +122,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
       )
     );
   }
+
   // Add attached image
   if (req.file) {
     req.body.photo = req.file.filename;
