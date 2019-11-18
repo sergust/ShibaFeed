@@ -77,16 +77,16 @@ UserSchema.methods.getSignedJwtToken = function() {
 
 // Generate and hash password token
 UserSchema.methods.getResetPasswordToken = function() {
-  //Generate token
+  // Generate token
   const resetToken = crypto.randomBytes(20).toString('hex');
 
-  //Hash token and set it to resetPasswordToken field
+  // Hash token and set to resetPasswordToken field
   this.resetPasswordToken = crypto
     .createHash('sha256')
-    .update('resetToken')
+    .update(resetToken)
     .digest('hex');
 
-  //Set expire
+  // Set expire
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
