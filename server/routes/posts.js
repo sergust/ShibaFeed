@@ -5,7 +5,9 @@ const {
   createPost,
   updatePost,
   deletePost,
-  addComment
+  addComment,
+  deleteComment,
+  updateComment
 } = require('../controllers/posts');
 const { protect } = require('../middleware/auth');
 const uploadImage = require('../utils/uploadImage');
@@ -24,5 +26,7 @@ router
   .delete(protect, deletePost);
 
 router.post('/:id/comments/addcomment', protect, addComment);
+router.delete('/:id/comments/:commentId', protect, deleteComment);
+router.put('/:id/comments/:commentId', protect, updateComment);
 
 module.exports = router;

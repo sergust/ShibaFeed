@@ -182,7 +182,7 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Create new comment
-// @router  POST /api/v1/posts/:id/addcomment
+// @router  POST /api/v1/posts/:id/comments/addcomment
 // @access  Private
 exports.addComment = asyncHandler(async (req, res, next) => {
   // Add user to req.body
@@ -198,4 +198,99 @@ exports.addComment = asyncHandler(async (req, res, next) => {
     success: true,
     createComment
   });
+});
+
+// @desc    Delete Comment
+// @router  DELETE /api/v1/posts/:id/comments/:commentId
+// @access  Private
+exports.deleteComment = asyncHandler(async (req, res, next) => {
+  // Get the post from database
+  const post = await Post.findById(req.params.id);
+
+  // Get the comment from database
+  const comment = await Comment.findById(req.params.commentId);
+
+  // Make sure the comment is exists
+  if (!comment) {
+    return next(
+      new ErrorResponse(
+        `Comment ID ${req.params.commentId} has not been found`,
+        404
+      )
+    );
+  }
+
+  // Make sure the comment is exists
+  if (!post) {
+    return next(
+      new ErrorResponse(`Post ID ${req.params.id} has not been found`, 404)
+    );
+  }
+
+  // Make sure user is comment owner
+  console.log(comment.user);
+  console.log(req.user.id);
+
+  if (
+    comment.user.toString() !== req.user.id.toString() &&
+    req.user.role !== 'admin'
+  ) {
+    return next(
+      new ErrorResponse('You are not allowed to delete this comment', 401)
+    );
+  }
+
+  // Remove the post from database
+  comment.remove();
+
+  res.status(200).json({
+    success: true,
+    data: `The comment ${req.params.commentId} has been sucessfully deleted!`
+  });
+});
+
+// @desc    Update comment
+// @router  PUT /api/v1/posts/:id/comments/:commentId
+// @access  Private
+exports.updateComment = asyncHandler(async (req, res, next) => {
+  //Take the post from db
+  let post = await Post.findById(req.params.id);
+
+  // Make sure post is exists
+  if (!post) {
+    return next(
+      new ErrorResponse(`Post ID ${req.params.id} has not been found`, 404)
+    );
+  }
+
+  //Take the comment from db
+  let comment = await Comment.findById(req.params.commentId);
+
+  // Make sure post is exists
+  if (!comment) {
+    return next(
+      new ErrorResponse(
+        `Comment ID ${req.params.commentId} has not been found`,
+        404
+      )
+    );
+  }
+
+  // Make sure user is comment owner
+  if (comment.user.toString() !== req.user.id) {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to update this comment`,
+        401
+      )
+    );
+  }
+
+  // Update the comment in db
+  comment = await Comment.findByIdAndUpdate(req.params.commentId, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({ success: true, comment });
 });
