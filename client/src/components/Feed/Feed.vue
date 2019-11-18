@@ -2,9 +2,16 @@
   <b-container>
     <b-row>
       <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="mx-auto">
-        <app-post></app-post>
-        <app-post></app-post>
-        <app-post></app-post>
+        <div v-for="(post) in this.$store.getters.getPosts" :key="post.id">
+          <app-post
+            :title="post.title"
+            :description="post.description"
+            :comments="post.comments"
+            :lastUpdated="post.lastUpdated"
+            :postOwner="post.postOwner"
+            :numberOfComments="post.numberOfComments"
+          />
+        </div>
       </b-col>
     </b-row>
   </b-container>

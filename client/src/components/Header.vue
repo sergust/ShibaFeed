@@ -6,12 +6,22 @@
           <b-img src="../assets/logo.svg" class="header--logo mx-auto mt-3 mb-3"></b-img>
         </b-col>
         <b-col cols="3" class="header--auth">
-          <p>🙌 Hi, username!</p>
+          <p>🙌 Hi, {{ getUsername }}!</p>
         </b-col>
       </b-row>
     </b-container>
   </b-container>
 </template>
+
+<script>
+export default {
+  computed: {
+    getUsername() {
+      return this.$store.getters.getUsername;
+    }
+  }
+};
+</script>
 
 <style>
 .header--logo {
