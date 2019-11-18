@@ -23,6 +23,6 @@ router
   .put(protect, uploadImage.single('photo'), updatePost)
   .delete(protect, deletePost);
 
-router.post('/:id/addcomment', protect, addComment);
+router.post('/:id/comments/addcomment', protect, addComment);
 
 module.exports = router;
