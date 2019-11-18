@@ -1,0 +1,4 @@
+server/node_modules
+_data
+server/public/posts
+.DS_Store
