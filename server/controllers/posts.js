@@ -2,6 +2,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 
@@ -11,7 +12,7 @@ dotenv.config({ path: './config/config.env' });
 // @router  GET /api/v1/posts
 // @access  Public
 exports.getPosts = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find();
+  const posts = await Post.find().populate('comments');
 
   if (!posts) {
     return next(new ErrorResponse(`Posts have not been found`, 404));
@@ -177,5 +178,24 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: `The post ${req.params.id} has been sucessfully deleted!`
+  });
+});
+
+// @desc    Create new comment
+// @router  POST /api/v1/posts/:id/addcomment
+// @access  Private
+exports.addComment = asyncHandler(async (req, res, next) => {
+  // Add user to req.body
+  req.body.user = req.user.id;
+
+  // Add post to req.body
+  req.body.post = req.params.id;
+
+  // Create new post in database
+  const createComment = await Comment.create(req.body);
+
+  res.status(201).json({
+    success: true,
+    createComment
   });
 });
