@@ -3,7 +3,7 @@
     <b-container>
       <b-navbar-brand href="#">
         <b-img src="../assets/logo.svg" class="header--logo"></b-img>
-        <a class="ml-3">ShibaFeed</a>
+        <a class="header--logo-text ml-3">ShibaFeed</a>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -51,5 +51,13 @@ export default {
 
 .header--auth {
   font-size: 24px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap');
+
+.header--logo-text {
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 1.7rem;
+  vertical-align: middle;
 }
 </style>
