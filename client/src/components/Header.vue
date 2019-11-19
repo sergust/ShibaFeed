@@ -2,8 +2,10 @@
   <b-navbar toggleable="lg" type="dark" class="mb-4 header">
     <b-container>
       <b-navbar-brand href="#">
-        <b-img src="../assets/logo.svg" class="header--logo"></b-img>
-        <a class="ml-3">ShibaFeed</a>
+        <b-link to="/feed" class="header--brand">
+          <b-img src="../assets/logo.svg" class="header--logo"></b-img>
+          <a class="header--logo-text ml-3">ShibaFeed</a>
+        </b-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -51,5 +53,23 @@ export default {
 
 .header--auth {
   font-size: 24px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap');
+
+.header--logo-text {
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 1.7rem;
+  vertical-align: middle;
+}
+
+.header--brand {
+  text-decoration: none;
+  color: #fff;
+}
+
+.header--brand:hover {
+  text-decoration: none;
+  color: #fff;
 }
 </style>
