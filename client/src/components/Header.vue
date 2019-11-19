@@ -2,10 +2,15 @@
   <b-navbar toggleable="lg" type="dark" class="mb-4 header">
     <b-container>
       <b-navbar-brand href="#">
+        <<<<<<< HEAD
         <b-link to="/feed" class="header--brand">
           <b-img src="../assets/logo.svg" class="header--logo"></b-img>
           <a class="header--logo-text ml-3">ShibaFeed</a>
         </b-link>
+        =======
+        <b-img src="../assets/logo.svg" class="header--logo"></b-img>
+        <a class="header--logo-text ml-3">ShibaFeed</a>
+        >>>>>>> 80d680a00885b224df340b1ed3510119787aa613
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
