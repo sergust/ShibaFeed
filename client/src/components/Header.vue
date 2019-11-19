@@ -1,18 +1,29 @@
 <template>
-  <b-container fluid class="header">
+  <b-navbar toggleable="lg" type="dark" class="mb-4 header">
     <b-container>
-      <b-row align-h="between" align-v="center">
-        <b-col class="header--logo-container" cols="2">
-          <b-img src="../assets/logo.svg" class="header--logo mx-auto mt-3 mb-3"></b-img>
-        </b-col>
-        <b-col cols="3" class="header--auth">
-          <p>🙌 Hi, {{ getUsername }}!</p>
-        </b-col>
-      </b-row>
-    </b-container>
-  </b-container>
-</template>
+      <b-navbar-brand href="#">
+        <b-img src="../assets/logo.svg" class="header--logo"></b-img>
+        <a class="ml-3">ShibaFeed</a>
+      </b-navbar-brand>
 
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown right>
+            <!-- Using 'button-content' slot -->
+            <template v-slot:button-content>
+              <a>{{ getUsername }}</a>
+            </template>
+            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-container>
+  </b-navbar>
+</template>
 <script>
 export default {
   computed: {
@@ -32,7 +43,6 @@ export default {
 .header {
   background-color: #756c83;
   box-shadow: 0px 0px 10px grey;
-  margin-bottom: 35px;
 }
 
 .header--logo-container {
