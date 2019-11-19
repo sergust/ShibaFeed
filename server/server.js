@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const errorHandler = require('./middleware/error');
 const colors = require('colors');
 const multer = require('multer');
+var cors = require('cors');
+
 const cookieParser = require('cookie-parser');
 connectDB = require('./config/db');
 
@@ -25,6 +27,9 @@ app.use(express.json());
 
 // Cookie parser
 app.use(cookieParser());
+
+// Connect CORS
+app.use(cors());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
