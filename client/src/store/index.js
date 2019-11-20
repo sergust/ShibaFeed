@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import axios from '../auth/axios-auth';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -67,8 +69,34 @@ export default new Vuex.Store({
       }
     ]
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    login(state, { user, token }) {
+      state.user = user;
+      state.user.token = token;
+    }
+  },
+  actions: {
+    login({ commit }, reqBody) {
+      axios
+        .post('/api/v1/auth/login', reqBody)
+        .then(res => {
+          console.log(res);
+
+          commit('login', { user: res.data.user, token: res.data.token });
+        })
+        .catch(err => console.log(err.response));
+    },
+    signup({ commit }, reqBody) {
+      axios
+        .post('/api/v1/auth/register', reqBody)
+        .then(res => {
+          console.log(res);
+
+          commit('login', { user: res.data.user, token: res.data.token });
+        })
+        .catch(err => console.log(err.response));
+    }
+  },
   modules: {},
   getters: {
     getUsername: state => {

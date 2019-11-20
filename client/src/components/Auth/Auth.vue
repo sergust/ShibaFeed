@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import axios from '../../auth/axios-auth';
 import makeToast from '../../utils/makeToast';
 export default {
   data() {
@@ -74,12 +73,7 @@ export default {
         email: this.loginEmail,
         password: this.loginPassword
       };
-      axios
-        .post('/api/v1/auth/login', reqBody)
-        .then(res => console.log(res))
-        .catch(err => {
-          this.makeToast(err.response.data.error, 'Failed login!');
-        });
+      this.$store.dispatch('login', reqBody);
     },
     signUp() {
       const reqSignUpBody = {
@@ -88,12 +82,7 @@ export default {
         email: this.signUpEmail,
         password: this.signUpPassword
       };
-      axios
-        .post('/api/v1/auth/register', reqSignUpBody)
-        .then(res => console.log(res))
-        .catch(err => {
-          this.makeToast(err.response.data.error, 'Signing Up failed!');
-        });
+      this.$store.dispatch('signup', reqSignUpBody);
     },
     ...makeToast
   }
