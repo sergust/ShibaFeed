@@ -6,8 +6,6 @@
           <b-img src="../assets/logo.svg" class="header--logo"></b-img>
           <a class="header--logo-text ml-3">ShibaFeed</a>
         </b-link>
-        <b-img src="../assets/logo.svg" class="header--logo"></b-img>
-        <a class="header--logo-text ml-3">ShibaFeed</a>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
