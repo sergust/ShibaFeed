@@ -13,14 +13,15 @@
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
+          <b-nav-item-dropdown v-if="authenticated" right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
               <a>{{ getUsername }}</a>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item href="#" v-if="!authenticated">Log in</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-container>
@@ -31,6 +32,14 @@ export default {
   computed: {
     getUsername() {
       return this.$store.getters.getUsername;
+    },
+    authenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    signOut() {
+      this.$store.dispatch('signout');
     }
   }
 };

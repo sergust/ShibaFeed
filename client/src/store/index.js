@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import router from '../router/index';
 
 import axios from '../auth/axios-auth';
 
@@ -10,9 +11,10 @@ export default new Vuex.Store({
     count: 0,
     user: {
       isAuthorized: false,
-      firstName: 'Sergey',
-      lastName: 'Ustinov',
-      email: 'shibafeeed@gmail.com'
+      firstName: 'Guest',
+      lastName: '',
+      email: 'shibafeeed@gmail.com',
+      token: null
     },
     posts: [
       {
@@ -73,6 +75,12 @@ export default new Vuex.Store({
     login(state, { user, token }) {
       state.user = user;
       state.user.token = token;
+    },
+    logout(state) {
+      state.user.token = null;
+      state.user.email = null;
+      state.user.firstName = null;
+      state.user.lastName = null;
     }
   },
   actions: {
@@ -85,6 +93,7 @@ export default new Vuex.Store({
           commit('login', { user: res.data.user, token: res.data.token });
         })
         .catch(err => console.log(err.response));
+      router.replace('/feed');
     },
     signup({ commit }, reqBody) {
       axios
@@ -93,6 +102,20 @@ export default new Vuex.Store({
           console.log(res);
 
           commit('login', { user: res.data.user, token: res.data.token });
+        })
+        .catch(err => console.log(err.response));
+    },
+    signout({ commit, getters }) {
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + getters.getToken
+        }
+      };
+      axios
+        .get('/api/v1/auth/logout', config)
+        .then(res => {
+          console.log(res);
+          commit('logout');
         })
         .catch(err => console.log(err.response));
     }
@@ -104,6 +127,12 @@ export default new Vuex.Store({
     },
     getPosts: state => {
       return state.posts;
+    },
+    getToken: state => {
+      return state.user.token;
+    },
+    isAuthenticated(state) {
+      return state.user.token !== null;
     }
   }
 });
