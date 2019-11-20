@@ -7,8 +7,8 @@
             :title="post.title"
             :description="post.description"
             :comments="post.comments"
-            :lastUpdated="post.lastUpdated"
-            :postOwner="post.postOwner"
+            :lastUpdated="post.createdAt"
+            :postOwner="post.user"
             :numberOfComments="post.numberOfComments"
           />
         </div>

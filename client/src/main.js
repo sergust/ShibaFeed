@@ -18,7 +18,7 @@ library.add(faComment, faUserNinja, faPaw);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.config.productionTip = false;
+Vue.use(require('vue-moment'));
 
 Vue.config.productionTip = false;
 

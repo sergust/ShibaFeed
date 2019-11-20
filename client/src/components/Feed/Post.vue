@@ -6,7 +6,7 @@
     img-top
     class="mb-5"
   >
-    <b-card-text>{{description}}</b-card-text>
+    <b-card-text>{{ description }}</b-card-text>
     <template v-slot:footer>
       <b-container>
         <b-row align-v="center" no-gutters>
@@ -14,17 +14,19 @@
             <div>
               <p>
                 <font-awesome-icon :icon="['fas', 'user-ninja']" class="mr-3" />
-                <small class="text-muted">{{postOwner}}</small>
+                <small class="text-muted">{{ postOwner }}</small>
               </p>
             </div>
             <div>
-              <small class="text-muted">Last updated: {{lastUpdated}}</small>
+              <small class="text-muted">
+                {{ lastUpdated | moment('MMMM Do YYYY, h:mm a') }}</small
+              >
             </div>
           </b-col>
           <b-col class="post--comment-block">
             <a class="post--comment-icon mt-2 mr-4">
               <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />
-              {{numberOfComments}}
+              {{ numberOfComments }}
             </a>
             <a>
               <a class="post--paw-icon mt-2 post--paw-counter">
@@ -38,7 +40,7 @@
             <div v-for="(comment, index) in comments" :key="index">
               <app-post-comment
                 :commentBody="comment.commentBody"
-                :commentOwner="comment.commentOwner"
+                :commentOwner="comment.user"
               ></app-post-comment>
             </div>
           </b-col>
