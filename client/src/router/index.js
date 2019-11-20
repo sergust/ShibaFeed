@@ -7,8 +7,9 @@ import Auth from '../components/Auth/Auth.vue';
 import MainPage from '../components/MainPage/MainPage.vue';
 
 const routes = [
-  { path: '/', component: Auth },
-  { path: '/feed', component: MainPage }
+  { path: '/', component: MainPage },
+  { path: '/auth', component: Auth },
+  { path: '*', redirect: '/' }
 ];
 
 const router = new VueRouter({

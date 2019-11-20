@@ -2,7 +2,7 @@
   <b-navbar toggleable="lg" type="dark" class="mb-4 header">
     <b-container>
       <b-navbar-brand href="#">
-        <b-link to="/feed" class="header--brand">
+        <b-link to="/" class="header--brand">
           <b-img src="../assets/logo.svg" class="header--logo"></b-img>
           <a class="header--logo-text ml-3">ShibaFeed</a>
         </b-link>
@@ -21,7 +21,7 @@
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item href="#" v-if="!authenticated">Log in</b-nav-item>
+          <b-nav-item to="/auth" v-if="!authenticated">Log in </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-container>
