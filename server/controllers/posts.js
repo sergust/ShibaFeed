@@ -38,7 +38,14 @@ exports.getPost = asyncHandler(async (req, res, next) => {
   // Add user to req.body
   req.body.user = req.user.id;
 
-  const post = await Post.findById(req.params.id);
+  const post = await Post.findById(req.params.id)
+    .populate('user')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'user'
+      }
+    });
 
   if (!post) {
     return next(

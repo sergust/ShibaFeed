@@ -14,7 +14,7 @@
             <div>
               <p>
                 <font-awesome-icon :icon="['fas', 'user-ninja']" class="mr-3" />
-                <small class="text-muted">{{ postOwner }}</small>
+                <small class="text-muted">{{ fullName() }}</small>
               </p>
             </div>
             <div>
@@ -26,7 +26,7 @@
           <b-col class="post--comment-block">
             <a class="post--comment-icon mt-2 mr-4">
               <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />
-              {{ numberOfComments }}
+              {{ comments.length }}
             </a>
             <a>
               <a class="post--paw-icon mt-2 post--paw-counter">
@@ -55,6 +55,11 @@ import PostComment from './PostComment.vue';
 export default {
   components: {
     appPostComment: PostComment
+  },
+  methods: {
+    fullName() {
+      return `${this.$props.postOwner.firstName} ${this.$props.postOwner.lastName}`;
+    }
   },
   props: [
     'title',
