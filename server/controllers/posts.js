@@ -12,7 +12,14 @@ dotenv.config({ path: './config/config.env' });
 // @router  GET /api/v1/posts
 // @access  Public
 exports.getPosts = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find().populate('comments');
+  const posts = await Post.find()
+    .populate('user')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'user'
+      }
+    });
 
   if (!posts) {
     return next(new ErrorResponse(`Posts have not been found`, 404));
