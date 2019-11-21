@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <b-container>
+    <b-container class="app--container">
       <router-view></router-view>
     </b-container>
   </div>
@@ -17,7 +17,8 @@ export default {
 </script>
 
 <style>
-#app {
+.app--container {
+  height: 100vh;
   background-color: #fbfbfb;
 }
 </style>
