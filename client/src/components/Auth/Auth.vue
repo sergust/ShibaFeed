@@ -17,7 +17,9 @@
           <b-button @click="logIn" variant="outline-primary" class="mr-4"
             >Log in</b-button
           >
-          <b-link>Forgot password?</b-link>
+          <b-link v-b-modal.modal-forgot-password to="/forgotpassword"
+            >Forgot password?</b-link
+          >
         </p>
       </div>
       <div>
