@@ -4,10 +4,10 @@ import router from '../../router/index';
 const state = {
   user: {
     isAuthorized: false,
-    firstName: 'Guest',
-    lastName: '',
-    email: 'shibafeeed@gmail.com',
-    token: null
+    firstName: localStorage.getItem('firstName') || '',
+    lastName: localStorage.getItem('lastName') || '',
+    email: '',
+    token: localStorage.getItem('token') || ''
   }
 };
 
@@ -18,14 +18,16 @@ const mutations = {
   },
   logout(state) {
     state.user.token = null;
-    state.user.email = null;
-    state.user.firstName = null;
-    state.user.lastName = null;
+    state.user.email = '';
+    state.user.firstName = '';
+    state.user.lastName = '';
   }
 };
 
 const actions = {
   login({ commit }, { vm, reqBody }) {
+    console.log(reqBody);
+
     axios
       .post('/api/v1/auth/login', reqBody)
       .then(res => {
@@ -38,6 +40,8 @@ const actions = {
         //   solid: true
         // });
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('firstName', res.data.user.firstName);
+        localStorage.setItem('lastName', res.data.user.lastName);
         router.push('/feed');
       })
       .catch(err => {
@@ -50,12 +54,18 @@ const actions = {
         console.log(err.response);
       });
   },
-  signup({ commit }, { vm, reqBody }) {
+  signup({ commit }, { vm, reqSignUpBody }) {
+    console.log(reqSignUpBody);
+
     axios
-      .post('/api/v1/auth/register', reqBody)
+      .post('/api/v1/auth/register', reqSignUpBody)
       .then(res => {
         console.log(res);
         commit('login', { user: res.data.user, token: res.data.token });
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('firstName', res.data.user.firstName);
+        localStorage.setItem('lastName', res.data.user.lastName);
+        router.push('/feed');
       })
       .catch(err => {
         vm.$bvToast.toast(`${err.response.data.error}`, {
@@ -73,16 +83,19 @@ const actions = {
       return;
     }
   },
-  signout({ commit, getters }) {
+  signout({ commit }) {
     const config = {
       headers: {
-        Authorization: 'Bearer ' + getters.getToken
+        Authorization: 'Bearer ' + localStorage.getItem('token')
       }
     };
     axios
       .get('/api/v1/auth/logout', config)
       .then(res => {
         console.log(res);
+        localStorage.removeItem('token');
+        localStorage.removeItem('firstName');
+        localStorage.removeItem('lastName');
         commit('logout');
       })
       .catch(err => console.log(err.response));
@@ -96,9 +109,7 @@ const getters = {
   getToken: state => {
     return state.user.token;
   },
-  isAuthenticated(state) {
-    return state.user.token !== null;
-  }
+  isAuthenticated: state => !!state.user.token
 };
 
 export default {
