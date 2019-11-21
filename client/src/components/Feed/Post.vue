@@ -26,7 +26,7 @@
           <b-col class="post--comment-block">
             <a class="post--comment-icon mt-2 mr-4">
               <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />
-              {{ comments.length }}
+              {{ comments ? comments.length : 0 }}
             </a>
             <a>
               <a class="post--paw-icon mt-2 post--paw-counter">
