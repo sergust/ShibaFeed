@@ -25,27 +25,47 @@ const mutations = {
 };
 
 const actions = {
-  login({ commit }, reqBody) {
+  login({ commit }, { vm, reqBody }) {
     axios
       .post('/api/v1/auth/login', reqBody)
       .then(res => {
         console.log(res);
-
         commit('login', { user: res.data.user, token: res.data.token });
+        // vm.$bvToast.toast(`Hey, ${res.data.user.firstName}!`, {
+        //   title: 'You are logged in!',
+        //   toaster: 'b-toaster-top-center',
+        //   variant: 'success',
+        //   solid: true
+        // });
         localStorage.setItem('token', res.data.token);
+        router.push('/feed');
       })
-      .catch(err => console.log(err.response));
-    router.replace('/feed');
+      .catch(err => {
+        vm.$bvToast.toast(`${err.response.data.error}`, {
+          title: 'Whoops, something went wrong!',
+          toaster: 'b-toaster-top-center',
+          variant: 'danger',
+          solid: true
+        });
+        console.log(err.response);
+      });
   },
-  signup({ commit }, reqBody) {
+  signup({ commit }, { vm, reqBody }) {
     axios
       .post('/api/v1/auth/register', reqBody)
       .then(res => {
         console.log(res);
-
         commit('login', { user: res.data.user, token: res.data.token });
       })
-      .catch(err => console.log(err.response));
+      .catch(err => {
+        vm.$bvToast.toast(`${err.response.data.error}`, {
+          title: 'Whoops, something went wrong!',
+          toaster: 'b-toaster-top-center',
+          variant: 'danger',
+          solid: true
+        });
+        console.log(err.response);
+      });
   },
   tryAutoLogin() {
     const token = localStorage.getItem('token');

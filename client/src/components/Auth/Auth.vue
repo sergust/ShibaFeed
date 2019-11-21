@@ -73,7 +73,7 @@ export default {
         email: this.loginEmail,
         password: this.loginPassword
       };
-      this.$store.dispatch('login', reqBody);
+      this.$store.dispatch('login', { vm: this, reqBody });
     },
     signUp() {
       const reqSignUpBody = {
@@ -82,7 +82,7 @@ export default {
         email: this.signUpEmail,
         password: this.signUpPassword
       };
-      this.$store.dispatch('signup', reqSignUpBody);
+      this.$store.dispatch('signup', { vm: this, reqSignUpBody });
     },
     ...makeToast
   }
