@@ -203,7 +203,8 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.addComment = asyncHandler(async (req, res, next) => {
   // Add user to req.body
-  req.body.user = req.user.id;
+  const user = await User.findById(req.user.id);
+  req.body.user = user;
 
   // Add post to req.body
   req.body.post = req.params.id;

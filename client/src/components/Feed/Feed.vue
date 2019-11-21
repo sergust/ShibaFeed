@@ -10,6 +10,7 @@
             :lastUpdated="post.createdAt"
             :postOwner="post.user"
             :numberOfComments="post.numberOfComments"
+            :postId="post.id"
           />
         </div>
       </b-col>

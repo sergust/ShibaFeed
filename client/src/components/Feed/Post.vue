@@ -43,6 +43,18 @@
                 :commentOwner="comment.user"
               ></app-post-comment>
             </div>
+            <b-input-group v-if="authenticated" class="mt-3">
+              <b-form-input
+                placeholder="Add a comment..."
+                v-model="commentBody"
+                v-on:keyup.enter="leaveComment"
+              ></b-form-input>
+              <b-input-group-append>
+                <b-button variant="outline-success" @click="leaveComment"
+                  >Add</b-button
+                >
+              </b-input-group-append>
+            </b-input-group>
           </b-col>
         </b-row>
       </b-container>
@@ -53,12 +65,24 @@
 <script>
 import PostComment from './PostComment.vue';
 export default {
+  data() {
+    return {
+      commentBody: ''
+    };
+  },
   components: {
     appPostComment: PostComment
   },
   methods: {
     fullName() {
       return `${this.$props.postOwner.firstName} ${this.$props.postOwner.lastName}`;
+    },
+    leaveComment() {
+      this.$store.dispatch('leaveComment', {
+        commentBody: this.commentBody,
+        postId: this.$props.postId
+      });
+      this.commentBody = '';
     }
   },
   props: [
@@ -67,8 +91,14 @@ export default {
     'comments',
     'lastUpdated',
     'postOwner',
-    'numberOfComments'
-  ]
+    'numberOfComments',
+    'postId'
+  ],
+  computed: {
+    authenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
+  }
 };
 </script>
 
