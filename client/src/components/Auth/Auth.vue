@@ -84,6 +84,8 @@ export default {
         email: this.signUpEmail,
         password: this.signUpPassword
       };
+      console.log(reqSignUpBody);
+
       this.$store.dispatch('signup', { vm: this, reqSignUpBody });
     },
     ...makeToast
