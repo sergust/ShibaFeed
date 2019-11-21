@@ -37,10 +37,11 @@
         </b-row>
         <b-row class="post--comments mt-4">
           <b-col>
-            <div v-for="(comment, index) in comments" :key="index">
+            <div v-for="comment in comments" :key="comment.id">
               <app-post-comment
                 :commentBody="comment.commentBody"
                 :commentOwner="comment.user"
+                :commentId="comment._id"
               ></app-post-comment>
             </div>
             <b-input-group v-if="authenticated" class="mt-3">

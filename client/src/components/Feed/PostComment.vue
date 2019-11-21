@@ -50,9 +50,12 @@ export default {
     },
     hideEdit() {
       this.isEditing = false;
+    },
+    updateComment() {
+      this.$store.dispatch('');
     }
   },
-  props: ['commentBody', 'commentOwner']
+  props: ['commentBody', 'commentOwner', 'commentId']
 };
 </script>
 
