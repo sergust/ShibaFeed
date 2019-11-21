@@ -13,6 +13,7 @@ dotenv.config({ path: './config/config.env' });
 // @access  Public
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const posts = await Post.find()
+    .sort({ createdAt: -1 })
     .populate('user')
     .populate({
       path: 'comments',
