@@ -17,10 +17,10 @@ const mutations = {
     state.user.token = token;
   },
   logout(state) {
-    state.user.token = null;
     state.user.email = '';
     state.user.firstName = '';
     state.user.lastName = '';
+    state.user.token = null;
   }
 };
 

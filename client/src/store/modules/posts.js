@@ -23,17 +23,11 @@ const actions = {
       .catch(err => console.log(err.response));
   },
   sendPost({ commit }, reqBody) {
-    // const config = {
-    //   headers: {
-    //     Authorization: 'Bearer ' + localStorage.getItem('token')
-    //   }
-    // };
-    console.log(reqBody);
-
     axios
       .post('/api/v1/posts', reqBody)
       .then(res => {
         console.log(res);
+
         commit('updatePosts', { newPost: res.data.post });
       })
       .catch(err => console.log(err.response));

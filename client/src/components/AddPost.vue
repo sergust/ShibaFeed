@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container v-if="authenticated">
     <b-row class="mb-4 ml-1 mr-1" align-h="center">
       <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="add-post--block">
         <b-form-input
@@ -17,7 +17,7 @@
           v-model="description"
         ></b-form-textarea>
         <div class="mb-3">
-          <b-button variant="outline-primary" class="mr-3"
+          <b-button v-show="false" variant="outline-primary" class="mr-3"
             >Add a photo</b-button
           >
           <b-button variant="success" @click="sendPost">Post!</b-button>
@@ -42,6 +42,11 @@ export default {
         description: this.description
       };
       this.$store.dispatch('sendPost', { ...reqBody });
+    }
+  },
+  computed: {
+    authenticated() {
+      return this.$store.getters.isAuthenticated;
     }
   }
 };
