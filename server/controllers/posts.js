@@ -2,6 +2,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const Post = require('../models/Post');
+const User = require('../models/User');
 const Comment = require('../models/Comment');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
@@ -65,7 +66,8 @@ exports.getPost = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.createPost = asyncHandler(async (req, res, next) => {
   // Add user to req.body
-  req.body.user = req.user.id;
+  const user = await User.findById(req.user.id);
+  req.body.user = user;
 
   // Check for published post
   const publishedPost = await Post.findOne({
