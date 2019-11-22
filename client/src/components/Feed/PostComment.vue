@@ -9,6 +9,7 @@
           :icon="['fas', 'edit']"
           class="post-comment--delete-icon ml-2"
           @click="showEdit"
+          v-if="this.$store.getters.isAuthenticated"
         />
       </p>
     </div>

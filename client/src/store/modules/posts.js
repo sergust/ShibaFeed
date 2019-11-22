@@ -44,10 +44,16 @@ const actions = {
       .post('/api/v1/posts', reqBody)
       .then(res => {
         console.log(res);
+        const newPost = {
+          ...res.data.post,
+          comments: []
+        };
 
-        commit('updatePosts', { newPost: res.data.post });
+        commit('updatePosts', { newPost });
       })
-      .catch(err => console.log(err.response));
+      .catch(err => {
+        console.log(err.response);
+      });
   },
   leaveComment({ commit }, { postId, commentBody }) {
     console.log(postId);
