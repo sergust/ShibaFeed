@@ -42,6 +42,7 @@
                 :commentBody="comment.commentBody"
                 :commentOwner="comment.user"
                 :commentId="comment._id"
+                :postId="postId"
               ></app-post-comment>
             </div>
             <b-input-group v-if="authenticated" class="mt-3">

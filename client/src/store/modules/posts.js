@@ -14,6 +14,12 @@ const mutations = {
   updatePostComments(state, { newComment, postId }) {
     const post = state.posts.find(post => post.id === postId);
     post.comments.push(newComment);
+  },
+  updatePostComment(state, { newComment, commentId, postId }) {
+    const post = state.posts.find(post => post.id === postId);
+    post.comments.find(
+      comment => comment._id === commentId
+    ).commentBody = newComment;
   }
 };
 
@@ -51,6 +57,25 @@ const actions = {
         });
       })
       .catch(err => console.log(err.response));
+  },
+  updateComment({ commit }, { commentBody, commentId, postId }) {
+    console.log('Comment Body', commentBody);
+    console.log('Comment ID', commentId);
+    console.log('Post ID', postId);
+
+    axios
+      .put(`/api/v1/posts/${postId}/comments/${commentId}`, { commentBody })
+      .then(res => {
+        console.log(res);
+        commit('updatePostComment', {
+          newComment: res.data.comment.commentBody,
+          commentId,
+          postId
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
   }
 };
 

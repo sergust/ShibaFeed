@@ -22,9 +22,11 @@
         <b-form-input
           ref="inputItem"
           :value="this.$props.commentBody"
+          v-model="comment"
+          @keyup.enter="updateComment"
         ></b-form-input>
         <b-input-group-append>
-          <b-button variant="info"
+          <b-button variant="info" @click="updateComment"
             ><font-awesome-icon :icon="['fas', 'edit']"
           /></b-button>
         </b-input-group-append>
@@ -37,7 +39,8 @@
 export default {
   data() {
     return {
-      isEditing: false
+      isEditing: false,
+      comment: this.$props.commentBody
     };
   },
   methods: {
@@ -50,12 +53,18 @@ export default {
     },
     hideEdit() {
       this.isEditing = false;
+      this.$nextTick(() => (this.isEditing = false));
     },
     updateComment() {
-      this.$store.dispatch('');
+      this.$store.dispatch('updateComment', {
+        commentBody: this.comment,
+        commentId: this.$props.commentId,
+        postId: this.$props.postId
+      });
+      this.hideEdit();
     }
   },
-  props: ['commentBody', 'commentOwner', 'commentId']
+  props: ['commentBody', 'commentOwner', 'commentId', 'postId']
 };
 </script>
 
