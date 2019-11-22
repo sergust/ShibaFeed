@@ -11,11 +11,12 @@ import {
   faComment,
   faUserNinja,
   faPaw,
-  faEdit
+  faEdit,
+  faBackspace
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faComment, faUserNinja, faPaw, faEdit);
+library.add(faComment, faUserNinja, faPaw, faEdit, faBackspace);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

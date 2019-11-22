@@ -8,7 +8,7 @@
         <font-awesome-icon
           :icon="['fas', 'edit']"
           class="post-comment--delete-icon ml-2"
-          @focus="showEdit"
+          @click="showEdit"
         />
       </p>
     </div>
@@ -17,7 +17,6 @@
         :prepend="fullName()"
         class="mt-3 mb-3"
         @keydown.esc="hideEdit"
-        @focusout="hideEdit"
       >
         <b-form-input
           ref="inputItem"
@@ -28,6 +27,9 @@
         <b-input-group-append>
           <b-button variant="info" @click="updateComment"
             ><font-awesome-icon :icon="['fas', 'edit']"
+          /></b-button>
+          <b-button variant="danger" @click="deleteComment"
+            ><font-awesome-icon :icon="['fas', 'backspace']"
           /></b-button>
         </b-input-group-append>
       </b-input-group>
@@ -58,6 +60,13 @@ export default {
     updateComment() {
       this.$store.dispatch('updateComment', {
         commentBody: this.comment,
+        commentId: this.$props.commentId,
+        postId: this.$props.postId
+      });
+      this.hideEdit();
+    },
+    deleteComment() {
+      this.$store.dispatch('deleteComment', {
         commentId: this.$props.commentId,
         postId: this.$props.postId
       });
