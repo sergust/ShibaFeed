@@ -1,11 +1,5 @@
 <template>
-  <b-card
-    :title="title"
-    img-src="https://picsum.photos/300/300/?image=41"
-    img-alt="Image"
-    img-top
-    class="mb-5"
-  >
+  <b-card :title="title" img-alt="Image" img-top class="mb-5">
     <b-card-text>{{ description }}</b-card-text>
     <template v-slot:footer>
       <b-container>
