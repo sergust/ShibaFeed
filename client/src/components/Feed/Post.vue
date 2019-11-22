@@ -1,5 +1,11 @@
 <template>
-  <b-card :title="title" img-alt="Image" img-top class="mb-5">
+  <b-card :title="title" img-alt="Image" img-top class="post--card mb-5">
+    <font-awesome-icon
+      @click="onEditPost"
+      :icon="['fas', 'ellipsis-h']"
+      class="post--ellipsis mr-3"
+    />
+
     <b-card-text>{{ description }}</b-card-text>
     <template v-slot:footer>
       <b-container>
@@ -12,9 +18,7 @@
               </p>
             </div>
             <div>
-              <small class="text-muted">
-                {{ lastUpdated | moment('MMMM Do YYYY, h:mm a') }}</small
-              >
+              <small class="text-muted">{{ lastUpdated | moment('MMMM Do YYYY, h:mm a') }}</small>
             </div>
           </b-col>
           <b-col class="post--comment-block">
@@ -46,9 +50,7 @@
                 v-on:keyup.enter="leaveComment"
               ></b-form-input>
               <b-input-group-append>
-                <b-button variant="outline-success" @click="leaveComment"
-                  >Add</b-button
-                >
+                <b-button variant="outline-success" @click="leaveComment">Add</b-button>
               </b-input-group-append>
             </b-input-group>
           </b-col>
@@ -79,6 +81,9 @@ export default {
         postId: this.$props.postId
       });
       this.commentBody = '';
+    },
+    onEditPost() {
+      this.$router.push({ path: `/${this.$props.postId}` });
     }
   },
   props: [
@@ -114,5 +119,15 @@ export default {
 
 .post--paw-counter {
   display: none;
+}
+
+.post--card {
+  position: relative;
+}
+
+.post--ellipsis {
+  position: absolute;
+  right: 0;
+  top: 15px;
 }
 </style>
