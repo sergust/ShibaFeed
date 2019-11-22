@@ -65,7 +65,11 @@ const actions = {
       })
       .catch(err => console.log(err.response));
   },
-  updateComment({ commit }, { commentBody, commentId, postId }) {
+  updateComment({ commit, dispatch }, { commentBody, commentId, postId }) {
+    if (commentBody === '') {
+      dispatch('deleteComment', { commentId, postId });
+      return;
+    }
     axios
       .put(`/api/v1/posts/${postId}/comments/${commentId}`, { commentBody })
       .then(res => {
@@ -81,9 +85,6 @@ const actions = {
       });
   },
   deleteComment({ commit }, { commentId, postId }) {
-    console.log('Comment ID', commentId);
-    console.log('Post ID', postId);
-
     axios
       .delete(`/api/v1/posts/${postId}/comments/${commentId}`)
       .then(res => {
