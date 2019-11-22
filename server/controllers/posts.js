@@ -37,9 +37,6 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
 // @router  Get /api/v1/posts/:id
 // @access  Public
 exports.getPost = asyncHandler(async (req, res, next) => {
-  // Add user to req.body
-  req.body.user = req.user.id;
-
   const post = await Post.findById(req.params.id)
     .populate('user')
     .populate({
