@@ -1,57 +1,59 @@
 <template>
-  <b-card :title="getPost.title" img-alt="Image" img-top class="post--card mb-5">
-    <b-card-text>{{ getPost.description }}</b-card-text>
-    <template v-slot:footer>
-      <b-container>
-        <b-row align-v="center" no-gutters>
-          <b-col>
-            <div>
-              <p>
-                <font-awesome-icon :icon="['fas', 'user-ninja']" class="mr-3" />
-                <small class="text-muted">{{ getPost.user.firstName }} {{getPost.user.lastName}}</small>
-              </p>
-            </div>
-            <div>
-              <small class="text-muted">{{ getPost.createdAt | moment('MMMM Do YYYY, h:mm a') }}</small>
-            </div>
-          </b-col>
-          <b-col class="post--comment-block">
-            <a class="post--comment-icon mt-2 mr-4">
-              <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />
-              {{ getPost.comments ? getPost.comments.length : 0 }}
-            </a>
-            <a>
-              <a class="post--paw-icon mt-2 post--paw-counter">
-                <font-awesome-icon :icon="['fas', 'paw']" class="mr-2" />3
+  <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="mx-auto">
+    <b-card :title="getPost.title" img-alt="Image" img-top class="post--card mb-5">
+      <b-card-text>{{ getPost.description }}</b-card-text>
+      <template v-slot:footer>
+        <b-container>
+          <b-row align-v="center" no-gutters>
+            <b-col>
+              <div>
+                <p>
+                  <font-awesome-icon :icon="['fas', 'user-ninja']" class="mr-3" />
+                  <small class="text-muted">{{ getPost.user.firstName }} {{getPost.user.lastName}}</small>
+                </p>
+              </div>
+              <div>
+                <small class="text-muted">{{ getPost.createdAt | moment('MMMM Do YYYY, h:mm a') }}</small>
+              </div>
+            </b-col>
+            <b-col class="post--comment-block">
+              <a class="post--comment-icon mt-2 mr-4">
+                <font-awesome-icon :icon="['fas', 'comment']" class="mr-2" />
+                {{ getPost.comments ? getPost.comments.length : 0 }}
               </a>
-            </a>
-          </b-col>
-        </b-row>
-        <b-row class="post--comments mt-4">
-          <b-col>
-            <div v-for="comment in getPost.comments" :key="comment.id">
-              <app-post-comment
-                :commentBody="comment.commentBody"
-                :commentOwner="comment.user"
-                :commentId="comment._id"
-                :postId="postId"
-              ></app-post-comment>
-            </div>
-            <b-input-group v-if="authenticated" class="mt-3">
-              <b-form-input
-                placeholder="Add a comment..."
-                v-model="commentBody"
-                v-on:keyup.enter="leaveComment"
-              ></b-form-input>
-              <b-input-group-append>
-                <b-button variant="outline-success" @click="leaveComment">Add</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col>
-        </b-row>
-      </b-container>
-    </template>
-  </b-card>
+              <a>
+                <a class="post--paw-icon mt-2 post--paw-counter">
+                  <font-awesome-icon :icon="['fas', 'paw']" class="mr-2" />3
+                </a>
+              </a>
+            </b-col>
+          </b-row>
+          <b-row class="post--comments mt-4">
+            <b-col>
+              <div v-for="comment in getPost.comments" :key="comment.id">
+                <app-post-comment
+                  :commentBody="comment.commentBody"
+                  :commentOwner="comment.user"
+                  :commentId="comment._id"
+                  :postId="postId"
+                ></app-post-comment>
+              </div>
+              <b-input-group v-if="authenticated" class="mt-3">
+                <b-form-input
+                  placeholder="Add a comment..."
+                  v-model="commentBody"
+                  v-on:keyup.enter="leaveComment"
+                ></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-success" @click="leaveComment">Add</b-button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-col>
+          </b-row>
+        </b-container>
+      </template>
+    </b-card>
+  </b-col>
 </template>
 
 <script>
