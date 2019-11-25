@@ -109,6 +109,9 @@ const actions = {
 const getters = {
   getPosts: state => {
     return state.posts;
+  },
+  getPost: state => postId => {
+    return state.posts.find(post => post.id === postId);
   }
 };
 
