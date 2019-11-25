@@ -11,6 +11,17 @@ const mutations = {
   updatePosts(state, { newPost }) {
     state.posts.unshift(newPost);
   },
+  deletePost(state, { postId }) {
+    let postsCopy = state.posts;
+    console.log('posts copy', postsCopy);
+
+    postsCopy.splice(
+      postsCopy.findIndex(post => post.id === postId),
+      1
+    );
+    console.log('after delete', postsCopy);
+    state.posts = [...postsCopy];
+  },
   updatePostComments(state, { newComment, postId }) {
     const post = state.posts.find(post => post.id === postId);
     post.comments.push(newComment);
@@ -31,13 +42,16 @@ const mutations = {
 };
 
 const actions = {
-  fetchPosts({ commit }) {
-    axios
-      .get('/api/v1/posts')
-      .then(res => {
-        commit('fetchPosts', { posts: res.data.data });
-      })
-      .catch(err => console.log(err.response));
+  fetchPosts({ commit, getters }) {
+    if (!getters.getPosts[1]) {
+      axios
+        .get('/api/v1/posts')
+        .then(res => {
+          commit('fetchPosts', { posts: res.data.data });
+          console.log(getters.getPosts);
+        })
+        .catch(err => console.log(err.response));
+    }
   },
   sendPost({ commit }, reqBody) {
     axios
@@ -54,6 +68,13 @@ const actions = {
       .catch(err => {
         console.log(err.response);
       });
+  },
+  deletePost({ commit }, { postId }) {
+    console.log(postId);
+    axios.delete(`/api/v1/posts/${postId}`).then(res => {
+      console.log(res);
+      commit('deletePost', { postId });
+    });
   },
   leaveComment({ commit }, { postId, commentBody }) {
     console.log(postId);

@@ -53,6 +53,10 @@
         </b-container>
       </template>
     </b-card>
+    <span>
+      <b-button class="mr-3">Edit post</b-button>
+      <b-button @click="deletePost">Delete post</b-button>
+    </span>
   </b-col>
 </template>
 
@@ -75,6 +79,11 @@ export default {
         postId: this.postId
       });
       this.commentBody = '';
+    },
+    deletePost() {
+      this.$store.dispatch('deletePost', { postId: this.postId }).then(() => {
+        this.$router.push('/');
+      });
     }
   },
   computed: {
