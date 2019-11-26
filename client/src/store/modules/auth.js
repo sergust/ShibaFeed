@@ -21,6 +21,9 @@ const mutations = {
     state.user.firstName = '';
     state.user.lastName = '';
     state.user.token = null;
+  },
+  fetchUser(state, { user }) {
+    state.user = user;
   }
 };
 
@@ -42,7 +45,7 @@ const actions = {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('firstName', res.data.user.firstName);
         localStorage.setItem('lastName', res.data.user.lastName);
-        router.push('/feed');
+        router.push('/');
       })
       .catch(err => {
         vm.$bvToast.toast(`${err.response.data.error}`, {
@@ -99,6 +102,18 @@ const actions = {
         commit('logout');
       })
       .catch(err => console.log(err.response));
+  },
+  getSingleUser({ commit }, { userId }) {
+    axios
+      .get(`/api/v1/auth/users/${userId}`)
+      .then(res => {
+        console.log(res);
+        localStorage.removeItem('token');
+        localStorage.removeItem('firstName');
+        localStorage.removeItem('lastName');
+        commit('fetchUser', { user: res.data.data });
+      })
+      .catch(err => console.log(err.response));
   }
 };
 
@@ -109,7 +124,13 @@ const getters = {
   getToken: state => {
     return state.user.token;
   },
-  isAuthenticated: state => !!state.user.token
+  isAuthenticated: state => !!state.user.token,
+  userId: state => {
+    return state.user._id;
+  },
+  authorizedUser: state => {
+    return state.user;
+  }
 };
 
 export default {

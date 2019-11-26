@@ -18,10 +18,10 @@
             <template v-slot:button-content>
               <a>{{ getUsername }}</a>
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item :to="profileRoute">Profile</b-dropdown-item>
             <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item to="/auth" v-if="!authenticated">Log in </b-nav-item>
+          <b-nav-item to="/auth" v-if="!authenticated">Log in</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-container>
@@ -35,6 +35,12 @@ export default {
     },
     authenticated() {
       return this.$store.getters.isAuthenticated;
+    },
+    userId() {
+      return this.$store.getters.userId;
+    },
+    profileRoute() {
+      return `/user/${this.$store.getters.userId}`;
     }
   },
   methods: {
