@@ -25,7 +25,10 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 // @router  Get /api/v1/auth/users:id
 // @access  Private/admin
 exports.getUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).populate({
+    path: 'posts',
+    populate: { path: 'user' }
+  });
 
   if (!user) {
     return next(

@@ -6,50 +6,64 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env' });
 
-const UserSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: [true, 'Please add your first name'],
-    trim: true,
-    maxlength: [50, 'First name can not be more than 50 characters']
+const UserSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, 'Please add your first name'],
+      trim: true,
+      maxlength: [50, 'First name can not be more than 50 characters']
+    },
+    lastName: {
+      type: String,
+      required: [true, 'Please add your last name'],
+      trim: true,
+      maxlength: [50, 'Last name can not be more than 50 characters']
+    },
+    avatar: {
+      type: String,
+      default: 'no-photo.jpg'
+    },
+    slug: String,
+    role: {
+      type: String,
+      enum: ['user'],
+      default: 'user'
+    },
+    email: {
+      type: String,
+      required: [true, 'Please add an email'],
+      unique: true,
+      match: [
+        /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/,
+        'Please add a valid email'
+      ]
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+      select: false
+    },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
   },
-  lastName: {
-    type: String,
-    required: [true, 'Please add your last name'],
-    trim: true,
-    maxlength: [50, 'Last name can not be more than 50 characters']
-  },
-  avatar: {
-    type: String,
-    default: 'no-photo.jpg'
-  },
-  slug: String,
-  role: {
-    type: String,
-    enum: ['user'],
-    default: 'user'
-  },
-  email: {
-    type: String,
-    required: [true, 'Please add an email'],
-    unique: true,
-    match: [
-      /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/,
-      'Please add a valid email'
-    ]
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-    select: false
-  },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
+);
+
+// Reverse populate with virtuals
+UserSchema.virtual('posts', {
+  ref: 'Post',
+  localField: '_id',
+  foreignField: 'user',
+  justOne: false
 });
 
 // Create user slug from the firstName and lastName
