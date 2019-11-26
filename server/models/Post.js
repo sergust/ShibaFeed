@@ -36,6 +36,13 @@ const PostSchema = new mongoose.Schema(
   }
 );
 
+// Cascade delete comments when a post is deleted
+PostSchema.pre('remove', async function(next) {
+  console.log(`Comments being removed from post ${this._id}`);
+  await this.model('Comment').deleteMany({ post: this._id });
+  next();
+});
+
 // Create post slug from the title
 PostSchema.pre('save', function(next) {
   this.slug = slugify(this.title, { lower: true });
