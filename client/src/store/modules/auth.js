@@ -71,7 +71,7 @@ const actions = {
         localStorage.setItem('userId', res.data.user._id);
         localStorage.setItem('firstName', res.data.user.firstName);
         localStorage.setItem('lastName', res.data.user.lastName);
-        router.push('/feed');
+        router.push('/');
       })
       .catch(err => {
         vm.$bvToast.toast(`${err.response.data.error}`, {
