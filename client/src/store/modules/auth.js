@@ -8,7 +8,9 @@ const state = {
     lastName: localStorage.getItem('lastName') || '',
     email: '',
     token: localStorage.getItem('token') || ''
-  }
+  },
+  fetchUser: {},
+  auth: {}
 };
 
 const mutations = {
@@ -23,7 +25,7 @@ const mutations = {
     state.user.token = null;
   },
   fetchUser(state, { user }) {
-    state.user = user;
+    state.fetchUser = user;
   }
 };
 
@@ -43,6 +45,7 @@ const actions = {
         //   solid: true
         // });
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userId', res.data.user._id);
         localStorage.setItem('firstName', res.data.user.firstName);
         localStorage.setItem('lastName', res.data.user.lastName);
         router.push('/');
@@ -66,6 +69,7 @@ const actions = {
         console.log(res);
         commit('login', { user: res.data.user, token: res.data.token });
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userId', res.data.user._id);
         localStorage.setItem('firstName', res.data.user.firstName);
         localStorage.setItem('lastName', res.data.user.lastName);
         router.push('/feed');
@@ -80,11 +84,17 @@ const actions = {
         console.log(err.response);
       });
   },
-  tryAutoLogin() {
+  tryAutoLogin({ commit }) {
     const token = localStorage.getItem('token');
     if (!token) {
       return;
     }
+    const user = {
+      firstName: localStorage.getItem('firstName'),
+      lastName: localStorage.getItem('lastName'),
+      _id: localStorage.getItem('userId')
+    };
+    commit('login', { token, user });
   },
   signout({ commit }) {
     const config = {
@@ -99,6 +109,7 @@ const actions = {
         localStorage.removeItem('token');
         localStorage.removeItem('firstName');
         localStorage.removeItem('lastName');
+        localStorage.removeItem('userId');
         commit('logout');
       })
       .catch(err => console.log(err.response));
@@ -108,9 +119,6 @@ const actions = {
       .get(`/api/v1/auth/users/${userId}`)
       .then(res => {
         console.log(res);
-        localStorage.removeItem('token');
-        localStorage.removeItem('firstName');
-        localStorage.removeItem('lastName');
         commit('fetchUser', { user: res.data.data });
       })
       .catch(err => console.log(err.response));
@@ -129,7 +137,7 @@ const getters = {
     return state.user._id;
   },
   authorizedUser: state => {
-    return state.user;
+    return state.fetchUser;
   }
 };
 
