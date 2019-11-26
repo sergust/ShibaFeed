@@ -17,9 +17,7 @@
           v-model="description"
         ></b-form-textarea>
         <div class="mb-3">
-          <b-button v-show="false" variant="outline-primary" class="mr-3"
-            >Add a photo</b-button
-          >
+          <b-button v-show="false" variant="outline-primary" class="mr-3">Add a photo</b-button>
           <b-button variant="success" @click="sendPost">Post!</b-button>
         </div>
       </b-col>
@@ -41,7 +39,10 @@ export default {
         title: this.title,
         description: this.description
       };
-      this.$store.dispatch('sendPost', { ...reqBody });
+      this.$store.dispatch('sendPost', { ...reqBody }).then(() => {
+        this.title = '';
+        this.description = '';
+      });
     }
   },
   computed: {
