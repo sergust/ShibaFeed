@@ -8,7 +8,7 @@
           <h4>{{user.email}}</h4>
         </div>
         <div>
-          <div v-for="post in user.posts" :key="post.id">
+          <div v-for="post in posts" :key="post.id">
             <app-post
               :title="post.title"
               :description="post.description"
@@ -36,6 +36,9 @@ export default {
   computed: {
     user() {
       return this.$store.getters.authorizedUser;
+    },
+    posts() {
+      return this.$store.getters.getPosts;
     }
   },
   components: {

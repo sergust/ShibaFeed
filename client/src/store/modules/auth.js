@@ -120,6 +120,7 @@ const actions = {
       .then(res => {
         console.log(res);
         commit('fetchUser', { user: res.data.data });
+        commit('fetchPosts', { posts: res.data.data.posts });
       })
       .catch(err => console.log(err.response));
   }
