@@ -2,30 +2,30 @@ import axios from '../../auth/axios-auth';
 import router from '../../router/index';
 
 const state = {
-  user: {
-    isAuthorized: false,
+  user: {},
+  fetchUser: {},
+  auth: {
     firstName: localStorage.getItem('firstName') || '',
     lastName: localStorage.getItem('lastName') || '',
     email: '',
-    token: localStorage.getItem('token') || ''
-  },
-  fetchUser: {},
-  auth: {}
+    token: localStorage.getItem('token') || '',
+    userId: localStorage.getItem('userId') || ''
+  }
 };
 
 const mutations = {
   login(state, { user, token }) {
-    state.user = user;
-    state.user.token = token;
+    state.auth = user;
+    state.auth.token = token;
   },
   logout(state) {
-    state.user.email = '';
-    state.user.firstName = '';
-    state.user.lastName = '';
-    state.user.token = null;
+    state.auth.email = '';
+    state.auth.firstName = '';
+    state.auth.lastName = '';
+    state.auth.token = null;
   },
   fetchUser(state, { user }) {
-    state.fetchUser = user;
+    state.user = user;
   }
 };
 
@@ -127,17 +127,17 @@ const actions = {
 
 const getters = {
   getUsername: state => {
-    return `${state.user.firstName} ${state.user.lastName}`;
+    return `${state.auth.firstName} ${state.auth.lastName}`;
   },
   getToken: state => {
-    return state.user.token;
+    return state.auth.token;
   },
-  isAuthenticated: state => !!state.user.token,
+  isAuthenticated: state => !!state.auth.token,
   userId: state => {
-    return state.user._id;
+    return state.auth._id;
   },
   authorizedUser: state => {
-    return state.fetchUser;
+    return state.user;
   }
 };
 
