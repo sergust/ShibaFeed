@@ -1,4 +1,4 @@
-import axios from '../../auth/axios-auth';
+import HTTP from '../../auth/axios-auth';
 
 const state = {
   posts: []
@@ -44,8 +44,12 @@ const mutations = {
 const actions = {
   fetchPosts({ commit, getters }) {
     if (!getters.getPosts[1]) {
-      axios
-        .get('/api/v1/posts')
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      };
+      HTTP.get('/api/v1/posts', config)
         .then(res => {
           commit('fetchPosts', { posts: res.data.data });
           console.log(getters.getPosts);
@@ -54,8 +58,12 @@ const actions = {
     }
   },
   sendPost({ commit }, reqBody) {
-    axios
-      .post('/api/v1/posts', reqBody)
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    HTTP.post('/api/v1/posts', reqBody, config)
       .then(res => {
         console.log(res);
         const newPost = {
@@ -70,18 +78,28 @@ const actions = {
       });
   },
   deletePost({ commit }, { postId }) {
-    console.log(postId);
-    axios.delete(`/api/v1/posts/${postId}`).then(res => {
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    HTTP.delete(`/api/v1/posts/${postId}`, config).then(res => {
       console.log(res);
       commit('deletePost', { postId });
     });
   },
   leaveComment({ commit }, { postId, commentBody }) {
-    console.log(postId);
-    console.log(commentBody);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    };
 
-    axios
-      .post(`api/v1/posts/${postId}/comments/addcomment`, { commentBody })
+    HTTP.post(
+      `api/v1/posts/${postId}/comments/addcomment`,
+      { commentBody },
+      config
+    )
       .then(res => {
         console.log(res);
 
@@ -97,8 +115,16 @@ const actions = {
       dispatch('deleteComment', { commentId, postId });
       return;
     }
-    axios
-      .put(`/api/v1/posts/${postId}/comments/${commentId}`, { commentBody })
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    HTTP.put(
+      `/api/v1/posts/${postId}/comments/${commentId}`,
+      { commentBody },
+      config
+    )
       .then(res => {
         console.log(res);
         commit('updatePostComment', {
@@ -112,8 +138,12 @@ const actions = {
       });
   },
   deleteComment({ commit }, { commentId, postId }) {
-    axios
-      .delete(`/api/v1/posts/${postId}/comments/${commentId}`)
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    HTTP.delete(`/api/v1/posts/${postId}/comments/${commentId}`, config)
       .then(res => {
         console.log(res);
         commit('deletePostComment', {

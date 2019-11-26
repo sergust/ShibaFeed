@@ -1,4 +1,4 @@
-import axios from '../../auth/axios-auth';
+import HTTP from '../../auth/axios-auth';
 import router from '../../router/index';
 
 const state = {
@@ -34,8 +34,7 @@ const actions = {
   login({ commit }, { vm, reqBody }) {
     console.log(reqBody);
 
-    axios
-      .post('/api/v1/auth/login', reqBody)
+    HTTP.post('/api/v1/auth/login', reqBody)
       .then(res => {
         console.log(res);
         commit('login', { user: res.data.user, token: res.data.token });
@@ -64,8 +63,7 @@ const actions = {
   signup({ commit }, { vm, reqSignUpBody }) {
     console.log(reqSignUpBody);
 
-    axios
-      .post('/api/v1/auth/register', reqSignUpBody)
+    HTTP.post('/api/v1/auth/register', reqSignUpBody)
       .then(res => {
         console.log(res);
         commit('login', { user: res.data.user, token: res.data.token });
@@ -103,8 +101,7 @@ const actions = {
         Authorization: 'Bearer ' + localStorage.getItem('token')
       }
     };
-    axios
-      .get('/api/v1/auth/logout', config)
+    HTTP.get('/api/v1/auth/logout', config)
       .then(res => {
         console.log(res);
         localStorage.removeItem('token');
@@ -116,8 +113,7 @@ const actions = {
       .catch(err => console.log(err.response));
   },
   getSingleUser({ commit }, { userId }) {
-    axios
-      .get(`/api/v1/auth/users/${userId}`)
+    HTTP.get(`/api/v1/auth/users/${userId}`)
       .then(res => {
         console.log(res);
         commit('fetchUser', { user: res.data.data });
