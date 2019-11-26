@@ -21,6 +21,10 @@ exports.register = asyncHandler(async (req, res, next) => {
   // Create token
   const token = user.getSignedJwtToken();
 
+  // Remove password from response
+  user.password = '';
+  delete user['password'];
+
   res.status(200).json({
     success: true,
     token,
@@ -215,6 +219,10 @@ const sendTokenResponse = (user, statusCode, res) => {
   if (process.env.NODE_ENV === 'production') {
     options.secure = true;
   }
+
+  // Remove password from response
+  user.password = '';
+  delete user['password'];
 
   res
     .status(statusCode)
