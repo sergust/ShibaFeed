@@ -22,6 +22,18 @@ const mutations = {
     console.log('after delete', postsCopy);
     state.posts = [...postsCopy];
   },
+  updatePost(state, { updatedPost, postId }) {
+    let postsCopy = state.posts;
+    console.log('posts copy', postsCopy);
+
+    postsCopy.splice(
+      postsCopy.findIndex(post => post.id === postId),
+      1,
+      updatedPost
+    );
+    console.log('after update', postsCopy);
+    state.posts = [...postsCopy];
+  },
   updatePostComments(state, { newComment, postId }) {
     const post = state.posts.find(post => post.id === postId);
     post.comments.push(newComment);
@@ -86,6 +98,19 @@ const actions = {
     HTTP.delete(`/api/v1/posts/${postId}`, config).then(res => {
       console.log(res);
       commit('deletePost', { postId });
+    });
+  },
+  updatePost({ commit }, { reqBody, postId }) {
+    console.log('Reqbody from vuex', reqBody);
+    console.log('PostId from vuex', postId);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    HTTP.put(`/api/v1/posts/${postId}`, reqBody, config).then(res => {
+      commit('updatePost', { updatedPost: res.data.post, postId });
+      console.log(res);
     });
   },
   leaveComment({ commit }, { postId, commentBody }) {

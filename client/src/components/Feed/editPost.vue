@@ -1,6 +1,13 @@
 <template>
   <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="mx-auto">
-    <b-card :title="getPost.title" img-alt="Image" img-top class="post--card mb-5">
+    <b-card
+      :title="getPost.title"
+      img-alt="Image"
+      img-top
+      class="post--card mb-5"
+      v-if="!isEditing"
+      ref="post--card"
+    >
       <b-card-text>{{ getPost.description }}</b-card-text>
       <template v-slot:footer>
         <b-container>
@@ -53,24 +60,37 @@
         </b-container>
       </template>
     </b-card>
-    <span>
-      <b-button class="mr-3">Edit post</b-button>
-      <b-button @click="deletePost">Delete post</b-button>
-    </span>
+    <b-container v-else ref="post--card-editor">
+      <app-edit-post-redactor
+        :titleProp="getPost.title"
+        :descriptionProp="getPost.description"
+        :switchProp="this.switchEditing"
+        :postIdProp="postId"
+      ></app-edit-post-redactor>
+    </b-container>
+    <div class="mb-3 mt-5">
+      <span>
+        <b-button @click="switchEditing" class="mr-3">{{ isEditing ? 'Back' : 'Edit post'}}</b-button>
+        <b-button @click="deletePost" variant="danger">Delete post</b-button>
+      </span>
+    </div>
   </b-col>
 </template>
 
 <script>
 import PostComment from './PostComment.vue';
+import EditPostRedactor from './EditPostRedactor.vue';
 export default {
   data() {
     return {
       commentBody: '',
-      postId: this.$route.params.postId
+      postId: this.$route.params.postId,
+      isEditing: false
     };
   },
   components: {
-    appPostComment: PostComment
+    appPostComment: PostComment,
+    appEditPostRedactor: EditPostRedactor
   },
   methods: {
     leaveComment() {
@@ -84,6 +104,9 @@ export default {
       this.$store.dispatch('deletePost', { postId: this.postId }).then(() => {
         this.$router.push('/');
       });
+    },
+    switchEditing() {
+      this.isEditing = !this.isEditing;
     }
   },
   computed: {
