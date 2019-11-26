@@ -19,10 +19,11 @@ const mutations = {
     state.auth.token = token;
   },
   logout(state) {
-    state.auth.email = '';
-    state.auth.firstName = '';
-    state.auth.lastName = '';
-    state.auth.token = null;
+    // state.auth.email = '';
+    // state.auth.firstName = '';
+    // state.auth.lastName = '';
+    // state.auth.token = null;
+    state.auth = {};
   },
   fetchUser(state, { user }) {
     state.user = user;
