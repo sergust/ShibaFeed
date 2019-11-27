@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '../store/index';
 
 Vue.use(VueRouter);
 
@@ -11,7 +12,18 @@ import Profile from '../components/Profile/Profile.vue';
 
 const routes = [
   { path: '/', component: MainPage },
-  { path: '/auth', component: Auth },
+  {
+    path: '/auth',
+    component: Auth,
+    beforeEnter: (to, from, next) => {
+      if (
+        store.getters.getToken === '' ||
+        store.getters.getToken === undefined
+      ) {
+        next();
+      } else next('/');
+    }
+  },
   { path: '/forgotpassword', component: ForgotPassword },
   { path: '/:postId', name: 'post', component: editPost },
   { path: '/user/:userId', name: 'profile', component: Profile },
