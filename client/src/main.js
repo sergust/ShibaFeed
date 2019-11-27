@@ -16,12 +16,14 @@ import {
   faEllipsisH
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Vuelidate from 'vuelidate';
 
 library.add(faComment, faUserNinja, faPaw, faEdit, faBackspace, faEllipsisH);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(require('vue-moment'));
+Vue.use(Vuelidate);
 
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
