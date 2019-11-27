@@ -3,53 +3,22 @@
     <b-col cols="11" md="6" sm="8" xl="4">
       <div class="auth--login mb-5">
         <h4 class="mx-auto">Log in</h4>
-        <b-form-input
-          type="email"
-          placeholder="Your email"
-          v-model="loginEmail"
-        ></b-form-input>
-        <b-form-input
-          type="password"
-          placeholder="Your password"
-          v-model="loginPassword"
-        ></b-form-input>
+        <b-form-input type="email" placeholder="Your email" v-model="loginEmail"></b-form-input>
+        <b-form-input type="password" placeholder="Your password" v-model="loginPassword"></b-form-input>
         <p>
-          <b-button @click="logIn" variant="outline-primary" class="mr-4"
-            >Log in</b-button
-          >
-          <b-link v-b-modal.modal-forgot-password to="/forgotpassword"
-            >Forgot password?</b-link
-          >
+          <b-button @click="logIn" variant="outline-primary" class="mr-4">Log in</b-button>
+          <b-link v-b-modal.modal-forgot-password to="/forgotpassword">Forgot password?</b-link>
         </p>
       </div>
       <div>
         <div class="auth--signup">
-          <h4>First time there?</h4>
+          <h4>First time here?</h4>
           <p>Sign up for ShibaFeed</p>
-          <b-form-input
-            type="text"
-            placeholder="Your first name"
-            v-model="signUpFirstName"
-          ></b-form-input>
-          <b-form-input
-            i
-            type="text"
-            placeholder="Your last name"
-            v-model="signUpLastName"
-          ></b-form-input>
-          <b-form-input
-            type="email"
-            placeholder="Your email"
-            v-model="signUpEmail"
-          ></b-form-input>
-          <b-form-input
-            type="password"
-            placeholder="Your password"
-            v-model="signUpPassword"
-          ></b-form-input>
-          <b-button @click="signUp" block type="success" variant="success"
-            >Sign Me Up!</b-button
-          >
+          <b-form-input type="text" placeholder="Your first name" v-model="signUpFirstName"></b-form-input>
+          <b-form-input i type="text" placeholder="Your last name" v-model="signUpLastName"></b-form-input>
+          <b-form-input type="email" placeholder="Your email" v-model="signUpEmail"></b-form-input>
+          <b-form-input type="password" placeholder="Your password" v-model="signUpPassword"></b-form-input>
+          <b-button @click="signUp" block type="success" variant="success">Sign Me Up!</b-button>
         </div>
       </div>
     </b-col>
