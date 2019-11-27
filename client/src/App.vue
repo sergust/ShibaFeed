@@ -20,8 +20,12 @@ export default {
 </script>
 
 <style>
-.app--container {
+#app {
   height: 100vh;
   background-color: #fbfbfb;
+}
+
+.app--container {
+  height: 100vh;
 }
 </style>
