@@ -13,25 +13,21 @@ const mutations = {
   },
   deletePost(state, { postId }) {
     let postsCopy = state.posts;
-    console.log('posts copy', postsCopy);
-
     postsCopy.splice(
       postsCopy.findIndex(post => post.id === postId),
       1
     );
-    console.log('after delete', postsCopy);
     state.posts = [...postsCopy];
   },
   updatePost(state, { updatedPost, postId }) {
     let postsCopy = state.posts;
-    console.log('posts copy', postsCopy);
 
     postsCopy.splice(
       postsCopy.findIndex(post => post.id === postId),
       1,
       updatedPost
     );
-    console.log('after update', postsCopy);
+
     state.posts = [...postsCopy];
   },
   updatePostComments(state, { newComment, postId }) {
@@ -64,20 +60,13 @@ const actions = {
       HTTP.get('/api/v1/posts', config)
         .then(res => {
           commit('fetchPosts', { posts: res.data.data });
-          console.log(getters.getPosts);
         })
         .catch(err => console.log(err.response));
     }
   },
   sendPost({ commit }, reqBody) {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    HTTP.post('/api/v1/posts', reqBody, config)
+    HTTP.post('/api/v1/posts', reqBody)
       .then(res => {
-        console.log(res);
         const newPost = {
           ...res.data.post,
           comments: []
@@ -90,19 +79,11 @@ const actions = {
       });
   },
   deletePost({ commit }, { postId }) {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    HTTP.delete(`/api/v1/posts/${postId}`, config).then(res => {
-      console.log(res);
-      commit('deletePost', { postId });
-    });
+    HTTP.delete(`/api/v1/posts/${postId}`).then(
+      commit('deletePost', { postId })
+    );
   },
   updatePost({ commit }, { reqBody, postId }) {
-    console.log('Reqbody from vuex', reqBody);
-    console.log('PostId from vuex', postId);
     const config = {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -110,24 +91,11 @@ const actions = {
     };
     HTTP.put(`/api/v1/posts/${postId}`, reqBody, config).then(res => {
       commit('updatePost', { updatedPost: res.data.post, postId });
-      console.log(res);
     });
   },
   leaveComment({ commit }, { postId, commentBody }) {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-
-    HTTP.post(
-      `api/v1/posts/${postId}/comments/addcomment`,
-      { commentBody },
-      config
-    )
+    HTTP.post(`api/v1/posts/${postId}/comments/addcomment`, { commentBody })
       .then(res => {
-        console.log(res);
-
         commit('updatePostComments', {
           newComment: res.data.createComment,
           postId
@@ -140,18 +108,9 @@ const actions = {
       dispatch('deleteComment', { commentId, postId });
       return;
     }
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    HTTP.put(
-      `/api/v1/posts/${postId}/comments/${commentId}`,
-      { commentBody },
-      config
-    )
+
+    HTTP.put(`/api/v1/posts/${postId}/comments/${commentId}`, { commentBody })
       .then(res => {
-        console.log(res);
         commit('updatePostComment', {
           newComment: res.data.comment.commentBody,
           commentId,
@@ -163,19 +122,13 @@ const actions = {
       });
   },
   deleteComment({ commit }, { commentId, postId }) {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    HTTP.delete(`/api/v1/posts/${postId}/comments/${commentId}`, config)
-      .then(res => {
-        console.log(res);
+    HTTP.delete(`/api/v1/posts/${postId}/comments/${commentId}`)
+      .then(
         commit('deletePostComment', {
           commentId,
           postId
-        });
-      })
+        })
+      )
       .catch(err => {
         console.log(err.response);
       });

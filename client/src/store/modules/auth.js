@@ -19,10 +19,6 @@ const mutations = {
     state.auth.token = token;
   },
   logout(state) {
-    // state.auth.email = '';
-    // state.auth.firstName = '';
-    // state.auth.lastName = '';
-    // state.auth.token = null;
     state.auth = {};
   },
   fetchUser(state, { user }) {
@@ -32,11 +28,8 @@ const mutations = {
 
 const actions = {
   login({ commit }, { vm, reqBody }) {
-    console.log(reqBody);
-
     HTTP.post('/api/v1/auth/login', reqBody)
       .then(res => {
-        console.log(res);
         commit('login', { user: res.data.user, token: res.data.token });
         // vm.$bvToast.toast(`Hey, ${res.data.user.firstName}!`, {
         //   title: 'You are logged in!',
@@ -61,11 +54,8 @@ const actions = {
       });
   },
   signup({ commit }, { vm, reqSignUpBody }) {
-    console.log(reqSignUpBody);
-
     HTTP.post('/api/v1/auth/register', reqSignUpBody)
       .then(res => {
-        console.log(res);
         commit('login', { user: res.data.user, token: res.data.token });
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId', res.data.user._id);
@@ -102,8 +92,7 @@ const actions = {
       }
     };
     HTTP.get('/api/v1/auth/logout', config)
-      .then(res => {
-        console.log(res);
+      .then(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('firstName');
         localStorage.removeItem('lastName');
@@ -115,7 +104,6 @@ const actions = {
   getSingleUser({ commit }, { userId }) {
     HTTP.get(`/api/v1/auth/users/${userId}`)
       .then(res => {
-        console.log(res);
         commit('fetchUser', { user: res.data.data });
         commit('fetchPosts', { posts: res.data.data.posts });
       })

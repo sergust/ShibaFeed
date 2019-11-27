@@ -1,10 +1,13 @@
 import axios from 'axios';
+import localStorage from 'reactive-localstorage';
 
 const HTTP = axios.create({
   baseURL: 'http://localhost:5000/'
 });
 
-HTTP.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-  ? 'Bearer ' + localStorage.getItem('token')
-  : '';
+localStorage.on('change', () => {
+  HTTP.defaults.headers.common['Authorization'] =
+    'Bearer ' + localStorage.getItem('token');
+});
+
 export default HTTP;
