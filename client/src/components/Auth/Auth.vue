@@ -9,7 +9,7 @@
             placeholder="Your email"
             @blur="$v.loginEmail.$touch()"
             v-model="loginEmail"
-            :state="!$v.loginEmail.$error"
+            :state="$v.loginEmail.$dirty ? !$v.loginEmail.$error : null"
           ></b-form-input>
           <b-form-invalid-feedback>
             Please provide a valid email address
@@ -22,7 +22,7 @@
             placeholder="Your password"
             @blur="$v.loginPassword.$touch()"
             v-model="loginPassword"
-            :state="!$v.loginPassword.$error"
+            :state="$v.loginPassword.$dirty ? !$v.loginPassword.$error : null"
           ></b-form-input>
           <b-form-invalid-feedback>
             Your password should be at least 6 characters
@@ -30,7 +30,18 @@
         </div>
 
         <p>
-          <b-button @click="logIn" variant="outline-primary" class="mr-4"
+          <b-button
+            @click="logIn"
+            variant="outline-primary"
+            class="mr-4"
+            :disabled="
+              $v.loginPassword.$dirty &&
+              $v.loginEmail.$dirty &&
+              !$v.loginEmail.$error &&
+              !$v.loginPassword.$error
+                ? false
+                : true
+            "
             >Log in</b-button
           >
           <b-link v-b-modal.modal-forgot-password to="/forgotpassword"
