@@ -22,8 +22,10 @@
         <b-form-input
           ref="inputItem"
           :value="this.$props.commentBody"
-          v-model="comment"
           @keyup.enter="updateComment"
+          @blur="$v.comment.$touch()"
+          v-model="comment"
+          :state="$v.comment.$dirty ? !$v.comment.$error : null"
         ></b-form-input>
         <b-input-group-append>
           <b-button variant="info" @click="updateComment"
@@ -33,18 +35,31 @@
             ><font-awesome-icon :icon="['fas', 'backspace']"
           /></b-button>
         </b-input-group-append>
+        <b-form-invalid-feedback>
+          Comment should be less than
+          {{ $v.comment.$params.maxLen.max }}
+          characters
+        </b-form-invalid-feedback>
       </b-input-group>
     </div>
   </div>
 </template>
 
 <script>
+import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 export default {
   data() {
     return {
       isEditing: false,
       comment: this.$props.commentBody
     };
+  },
+  validations: {
+    comment: {
+      required,
+      minLen: minLength(1),
+      maxLen: maxLength(250)
+    }
   },
   methods: {
     fullName() {
