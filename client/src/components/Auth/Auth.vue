@@ -25,7 +25,8 @@
             :state="$v.loginPassword.$dirty ? !$v.loginPassword.$error : null"
           ></b-form-input>
           <b-form-invalid-feedback>
-            Your password should be at least 6 characters
+            Your password should be at least
+            {{ $v.loginPassword.$params.minLen.min }} characters
           </b-form-invalid-feedback>
         </div>
 
@@ -53,28 +54,83 @@
         <div class="auth--signup">
           <h4>First time here?</h4>
           <p>Sign up for ShibaFeed</p>
-          <b-form-input
-            type="text"
-            placeholder="Your first name"
-            v-model="signUpFirstName"
-          ></b-form-input>
-          <b-form-input
-            i
-            type="text"
-            placeholder="Your last name"
-            v-model="signUpLastName"
-          ></b-form-input>
-          <b-form-input
-            type="email"
-            placeholder="Your email"
-            v-model="signUpEmail"
-          ></b-form-input>
-          <b-form-input
-            type="password"
-            placeholder="Your password"
-            v-model="signUpPassword"
-          ></b-form-input>
-          <b-button @click="signUp" block type="success" variant="success"
+          <div>
+            <b-form-input
+              type="text"
+              placeholder="Your first name"
+              @blur="$v.signUpFirstName.$touch()"
+              v-model="signUpFirstName"
+              :state="
+                $v.signUpFirstName.$dirty ? !$v.signUpFirstName.$error : null
+              "
+            ></b-form-input>
+            <b-form-invalid-feedback>
+              This field should not be empty
+            </b-form-invalid-feedback>
+          </div>
+
+          <div>
+            <b-form-input
+              i
+              type="text"
+              placeholder="Your last name"
+              @blur="$v.signUpLastName.$touch()"
+              v-model="signUpLastName"
+              :state="
+                $v.signUpLastName.$dirty ? !$v.signUpLastName.$error : null
+              "
+            ></b-form-input>
+            <b-form-invalid-feedback>
+              This field should not be empty
+            </b-form-invalid-feedback>
+          </div>
+
+          <div>
+            <b-form-input
+              type="email"
+              placeholder="Your email"
+              @blur="$v.signUpEmail.$touch()"
+              v-model="signUpEmail"
+              :state="$v.signUpEmail.$dirty ? !$v.signUpEmail.$error : null"
+            ></b-form-input>
+            <b-form-invalid-feedback>
+              Please provide a valid email address
+            </b-form-invalid-feedback>
+          </div>
+
+          <div>
+            <b-form-input
+              type="password"
+              placeholder="Your password"
+              @blur="$v.signUpPassword.$touch()"
+              v-model="signUpPassword"
+              :state="
+                $v.signUpPassword.$dirty ? !$v.signUpPassword.$error : null
+              "
+            ></b-form-input>
+            <b-form-invalid-feedback>
+              Your password should be at least
+              {{ $v.signUpPassword.$params.minLen.min }} characters
+            </b-form-invalid-feedback>
+          </div>
+
+          <b-button
+            @click="signUp"
+            block
+            type="success"
+            variant="success"
+            :disabled="
+              $v.signUpFirstName.$dirty &&
+              $v.signUpLastName.$dirty &&
+              $v.signUpEmail.$dirty &&
+              $v.signUpPassword.$dirty &&
+              !$v.signUpFirstName.$error &&
+              !$v.signUpLastName.$error &&
+              !$v.signUpEmail.$error &&
+              !$v.signUpFirstName.$error
+                ? false
+                : true
+            "
             >Sign Me Up!</b-button
           >
         </div>
@@ -124,6 +180,22 @@ export default {
       email
     },
     loginPassword: {
+      required,
+      minLen: minLength(6)
+    },
+    signUpFirstName: {
+      required,
+      minLen: minLength(1)
+    },
+    signUpLastName: {
+      required,
+      minLen: minLength(1)
+    },
+    signUpEmail: {
+      required,
+      email
+    },
+    signUpPassword: {
       required,
       minLen: minLength(6)
     }
