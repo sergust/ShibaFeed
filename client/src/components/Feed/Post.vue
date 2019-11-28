@@ -18,7 +18,9 @@
               </p>
             </div>
             <div>
-              <small class="text-muted">{{ lastUpdated | moment('MMMM Do YYYY, h:mm a') }}</small>
+              <small class="text-muted">{{
+                lastUpdated | moment('MMMM Do YYYY, h:mm a')
+              }}</small>
             </div>
           </b-col>
           <b-col class="post--comment-block">
@@ -46,12 +48,25 @@
             <b-input-group v-if="authenticated" class="mt-3">
               <b-form-input
                 placeholder="Add a comment..."
-                v-model="commentBody"
                 v-on:keyup.enter="leaveComment"
+                @blur="$v.commentBody.$touch()"
+                v-model="commentBody"
+                :state="$v.commentBody.$dirty ? !$v.commentBody.$error : null"
               ></b-form-input>
+
               <b-input-group-append>
-                <b-button variant="outline-success" @click="leaveComment">Add</b-button>
+                <b-button
+                  variant="outline-success"
+                  @click="leaveComment"
+                  :disabled="$v.$anyDirty && !$v.$anyError ? false : true"
+                  >Add</b-button
+                >
               </b-input-group-append>
+              <b-form-invalid-feedback>
+                Comment should be less than
+                {{ $v.commentBody.$params.maxLen.max }}
+                characters and should not be empty
+              </b-form-invalid-feedback>
             </b-input-group>
           </b-col>
         </b-row>
@@ -61,12 +76,20 @@
 </template>
 
 <script>
+import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 import PostComment from './PostComment.vue';
 export default {
   data() {
     return {
       commentBody: ''
     };
+  },
+  validations: {
+    commentBody: {
+      required,
+      maxLen: maxLength(250),
+      minLen: minLength(1)
+    }
   },
   components: {
     appPostComment: PostComment
