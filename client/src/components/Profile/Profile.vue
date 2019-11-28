@@ -3,9 +3,13 @@
     <b-row>
       <b-col cols="12" xl="8" lg="8" md="12" sm="12" class="mx-auto">
         <div class="profile-name mb-5 mt-5">
-          <b-img src="../../assets/ava.jpeg" class="profile-name--avatar"></b-img>
-          <h2>{{user.firstName}} {{user.lastName}}</h2>
-          <h4>{{user.email}}</h4>
+          <b-img
+            src="../../assets/ava.jpeg"
+            class="profile-name--avatar"
+          ></b-img>
+          <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+          <h4>{{ user.email }}</h4>
+          <h5>Total posts: {{ postsCounter }}</h5>
         </div>
         <div>
           <div v-for="post in posts" :key="post.id">
@@ -39,6 +43,9 @@ export default {
     },
     posts() {
       return this.$store.getters.getPosts;
+    },
+    postsCounter() {
+      return this.$store.getters.getPosts.length;
     }
   },
   components: {
