@@ -7,9 +7,19 @@
         <b-form-input
           type="email"
           placeholder="Your email"
+          @blur="$v.email.$touch()"
           v-model="email"
+          :state="$v.email.$dirty ? !$v.email.$error : null"
         ></b-form-input>
-        <b-button @click="sendEmail" block type="success" variant="success"
+        <b-form-invalid-feedback>
+          Please enter a valid email
+        </b-form-invalid-feedback>
+        <b-button
+          @click="sendEmail"
+          block
+          type="success"
+          variant="success"
+          :disabled="$v.$anyDirty && !$v.$anyError ? false : true"
           >Reset my password!</b-button
         >
       </div>
@@ -18,12 +28,19 @@
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators';
 import axios from '../../auth/axios-auth';
 export default {
   data() {
     return {
       email: null
     };
+  },
+  validations: {
+    email: {
+      required,
+      email
+    }
   },
   methods: {
     sendEmail() {
