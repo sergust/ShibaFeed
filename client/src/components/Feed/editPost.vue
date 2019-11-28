@@ -15,12 +15,20 @@
             <b-col>
               <div>
                 <p>
-                  <font-awesome-icon :icon="['fas', 'user-ninja']" class="mr-3" />
-                  <small class="text-muted">{{ getPost.user.firstName }} {{getPost.user.lastName}}</small>
+                  <font-awesome-icon
+                    :icon="['fas', 'user-ninja']"
+                    class="mr-3"
+                  />
+                  <small class="text-muted"
+                    >{{ getPost.user.firstName }}
+                    {{ getPost.user.lastName }}</small
+                  >
                 </p>
               </div>
               <div>
-                <small class="text-muted">{{ getPost.createdAt | moment('MMMM Do YYYY, h:mm a') }}</small>
+                <small class="text-muted">{{
+                  getPost.createdAt | moment('MMMM Do YYYY, h:mm a')
+                }}</small>
               </div>
             </b-col>
             <b-col class="post--comment-block">
@@ -52,7 +60,9 @@
                   v-on:keyup.enter="leaveComment"
                 ></b-form-input>
                 <b-input-group-append>
-                  <b-button variant="outline-success" @click="leaveComment">Add</b-button>
+                  <b-button variant="outline-success" @click="leaveComment"
+                    >Add</b-button
+                  >
                 </b-input-group-append>
               </b-input-group>
             </b-col>
@@ -69,8 +79,10 @@
       ></app-edit-post-redactor>
     </b-container>
     <div class="mb-3 mt-5">
-      <span>
-        <b-button @click="switchEditing" class="mr-3">{{ isEditing ? 'Back' : 'Edit post'}}</b-button>
+      <span v-if="authenticated">
+        <b-button @click="switchEditing" class="mr-3">{{
+          isEditing ? 'Back' : 'Edit post'
+        }}</b-button>
         <b-button @click="deletePost" variant="danger">Delete post</b-button>
       </span>
     </div>
